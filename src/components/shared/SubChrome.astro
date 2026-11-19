@@ -1,0 +1,37 @@
+---
+// Ruler + floating nav + cursor used by every page except the homepage.
+import * as i from './icons';
+import { dl } from '../home/icons';
+import { site } from '../../data/site';
+interface Props { active?: string; clouds?: 'default' | 'contact' }
+const { active, clouds = 'default' } = Astro.props;
+const nav = site.nav.map((n) => ({ ...n, href: n.cls === 'home' ? '/' : n.href }));
+---
+{clouds === 'contact' ? (
+  <div class="sky" aria-hidden="true"><span class="cloud b c10"></span><span class="cloud a c11"></span><span class="cloud b c12"></span><span class="cloud a c13"></span><span class="cloud b c14"></span><span class="cloud a c15"></span><div class="cloud a c1"></div><div class="cloud b c2"></div><div class="cloud a c3"></div><div class="cloud b c4"></div></div>
+) : (
+  <div class="sky" aria-hidden="true">
+    {['a c1','b c2','a c3','b c4','a c5','b c6','a c7','b c8','a c9'].map((c) => <span class={`cloud ${c}`}></span>)}
+  </div>
+)}
+<div class="ruler">
+  <div class="r-logo"><b class="r-mark"></b> {site.brand.toUpperCase()}<span class="r-rest">{site.fullName.slice(site.brand.length).trim().toUpperCase()}</span></div>
+  <div class="ticks"><canvas id="rulerTop"></canvas></div>
+  <div class="r-zoom"><span class="dot"></span> LIVE · <span id="ct">--:--:-- --</span></div>
+</div>
+<div class="topbar">
+  <div class="pill status-pill"><span class="dot"></span> {site.status}</div>
+  <nav class="pill nav-pill">
+    {nav.map((n) => <a class={[n.cls, active === n.label ? 'active' : ''].filter(Boolean).join(' ') || undefined} href={n.href}>{n.label}</a>)}
+    <a class="cta" href="/contact">Contact</a>
+  </nav>
+  <div class="tb-end">
+    <a class="pill cv-pill" href={site.cv.href} download={site.cv.file}><Fragment set:html={dl} /> CV</a>
+    <a class="pill mail-pill" href={`mailto:${site.email}`}><Fragment set:html={i.mail} /> {site.email}</a>
+  </div>
+</div>
+<div class="cursor-layer" id="cursorLayer">
+  <div class="fcursor" id="curYou"><Fragment set:html={i.cursor} /><span class="name" style="background:#0D99FF">You</span></div>
+</div>
+
+<div class="grain"></div>

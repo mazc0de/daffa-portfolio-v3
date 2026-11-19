@@ -1,0 +1,9 @@
+---
+import * as i from './icons';
+import type { Project } from '../../data/site';
+import { srcset } from '../../data/assets';
+interface Props { p: Project }
+const { p } = Astro.props;
+// badge: LIVE (green dot) only for public projects; the rest show where they run (kiosk, web app…)
+---
+<a class="wk" data-cat={p.tags.join(' ').toLowerCase()} href={`/work/${p.slug}`}><div class="wk-shell" style={`--ac:${p.accent}`}><span class="wk-lab">{p.slug}</span><span class="wk-nub tl"></span><span class="wk-nub tr"></span><span class="wk-nub bl"></span><span class="wk-nub br"></span><div class="wk-card"><div class="wk-media"><img src={p.image} srcset={srcset(p.image, [640, 1024], 1600)} sizes="(max-width: 760px) 92vw, min(46vw, 640px)" alt={p.name} width="1600" height="900" loading="lazy" decoding="async">{p.link ? <span class="wk-live"><i></i>LIVE</span> : <span class="wk-live wk-plat">{p.platform}</span>}<span class="wk-open"><Fragment set:html={i.arrowUR} /></span></div><div class="wk-cap"><span class="wk-nm">{p.name}</span><span class="wk-tags">{p.tags.map((t) => <span>{t}</span>)}</span></div></div></div></a>

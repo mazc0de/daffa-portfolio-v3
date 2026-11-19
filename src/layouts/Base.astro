@@ -1,0 +1,116 @@
+---
+import { site, clientConfig } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** page-specific stylesheet (imported by the page) is bundled automatically */
+  scripts?: string[];
+  /** external libraries to load before page scripts */
+  vendor?: string[];
+  fontCss?: string[];
+  /** static, unprocessed stylesheets (served from /public as-is) */
+  css?: string[];
+  /** keep the page out of search results (404) */
+  noindex?: boolean;
+  /** woff2 files to preload (fonts needed for the first screen) */
+  fontPreload?: string[];
+  /** third-party origins the page calls early */
+  preconnect?: string[];
+}
+
+const {
+  title = `${site.fullName} | ${site.tagline}`,
+  description = site.description,
+  scripts = [],
+  vendor = [],
+  fontCss = [],
+  css = [],
+  noindex = false,
+  fontPreload = [],
+  preconnect = [],
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.fullName,
+  alternateName: site.brand,
+  jobTitle: site.tagline,
+  image: new URL(site.about.photo, site.url).href,
+  url: site.url,
+  email: site.email,
+  description: site.description,
+  sameAs: site.socials.map((s) => s.href),
+  address: { '@type': 'PostalAddress', addressLocality: site.location.city, addressCountry: 'ID' },
+};
+const ogImage = new URL(site.ogImage, site.url).href;
+const ogImageAlt = `${site.fullName}, ${site.tagline}`;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#5EAEEA" />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.fullName} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {!noindex && <meta property="og:url" content={canonical} />}
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    {preconnect.map((href) => <link rel="preconnect" href={href} crossorigin />)}
+    {fontPreload.map((href) => <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />)}
+    {fontCss.map((href) => <link rel="stylesheet" href={href} />)}
+    {css.map((href) => <link rel="stylesheet" href={href} />)}
+    <link rel="stylesheet" href="/css/brand.css" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script is:inline>
+      // a refresh always starts at the top (the browser would otherwise restore the old scroll
+      // position or jump to the #hash). Links like /#about and back/forward keep working as usual.
+      (function () {
+        var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+        if (!nav || nav.type !== 'reload') return;
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        function top() { window.scrollTo(0, 0); }
+        top();
+        document.addEventListener('DOMContentLoaded', top);
+        window.addEventListener('load', function () {
+          top();
+          // back to normal afterwards, so back/forward still remember where you were
+          setTimeout(function () { top(); if ('scrollRestoration' in history) history.scrollRestoration = 'auto'; }, 0);
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <slot />
+    <script is:inline define:vars={{ cfg: clientConfig }}>window.__SITE__ = cfg;</script>
+    <script is:inline>
+      // tab icon: a ghost emoji (👻) while the visitor is on another tab, the normal mark when they come back
+      (function () {
+        var icon = document.querySelector('link[rel="icon"]');
+        if (!icon) return;
+        var home = icon.getAttribute('href'), away = '/favicon-away.svg';
+        new Image().src = away; // warm the cache so the swap is instant
+        document.addEventListener('visibilitychange', function () { icon.setAttribute('href', document.hidden ? away : home); });
+      })();
+    </script>
+    {vendor.map((src) => <script is:inline src={src}></script>)}
+    {scripts.map((src) => <script is:inline src={src}></script>)}
+  </body>
+</html>
