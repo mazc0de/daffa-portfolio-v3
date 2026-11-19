@@ -23,6 +23,7 @@ halaman `/work/<slug>`).
 | Gambar OG | `public/brand/og.png` (1200×630, dipakai untuk preview link). Sumber desainnya `public/brand/og.svg`; render ulang ke PNG bila diubah: bungkus SVG-nya dalam HTML yang memuat `/fonts/home.css` (font Space Mono tidak terpasang di sistem), sajikan hasil build lewat server lokal, lalu `"Google Chrome" --headless=new --window-size=1200,630 --virtual-time-budget=4000 --screenshot=og.png <url>` |
 | Gambar proyek | `public/images/work/<slug>.svg`, `-1/-2/-3.svg`, `-page.svg` (halaman penuh untuk tour) |
 | Video/poster layanan | `public/images/services/` → isi `video` di `services.items` |
+| CV | `public/cv/*.pdf` (path di `site.cv`). Tombol CV kanan atas membuka preview PDF (`src/components/shared/CvPreview.astro`) dengan tombol Download / Open PDF; cukup ganti file PDF-nya, preview ikut berubah |
 | Testimoni | `public/images/people/` → isi `video` agar tombol PLAY aktif |
 
 Form `/contact` tidak memakai backend: brief dirangkai jadi pesan lalu dibuka di WhatsApp
