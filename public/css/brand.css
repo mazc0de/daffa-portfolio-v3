@@ -1,8 +1,8 @@
 /* Brand overrides – loaded after the page stylesheet.
    Replace /brand/mark.svg with your own logo mark (square, ~64×64). */
-:root { --omFace: url(/brand/mark.svg); }
+:root { --omFace: url(/brand/mark.svg?v=2); }
 /* same specificity as the page stylesheets' `.r-logo b.r-mark`, so this later rule wins */
-.r-logo b.r-mark { background: url(/brand/mark.svg) center / contain no-repeat !important; }
+.r-logo b.r-mark { background: url(/brand/mark.svg?v=2) center / contain no-repeat !important; }
 
 /* footer giant wordmark with the full name (18 characters instead of 5): sized to fit one line */
 .foot-word.foot-word--full { font-size: clamp(26px, 12.4vw, 250px); }

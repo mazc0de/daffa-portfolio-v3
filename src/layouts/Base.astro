@@ -45,6 +45,8 @@ const jsonLd = {
   address: { '@type': 'PostalAddress', addressLocality: site.location.city, addressCountry: 'ID' },
 };
 const ogImage = new URL(site.ogImage, site.url).href;
+// bump when the logo or icons change: browsers keep favicons in their own cache and a new URL forces a fresh copy
+const iconV = '?v=2';
 const ogImageAlt = `${site.fullName}, ${site.tagline}`;
 ---
 <!doctype html>
@@ -69,10 +71,10 @@ const ogImageAlt = `${site.fullName}, ${site.tagline}`;
     <meta property="og:image:alt" content={ogImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image:alt" content={ogImageAlt} />
-    <link rel="icon" href="/favicon.ico" sizes="32x32" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="icon" href={`/favicon.ico${iconV}`} sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href={`/favicon.svg${iconV}`} />
+    <link rel="apple-touch-icon" href={`/apple-touch-icon.png${iconV}`} />
+    <link rel="manifest" href={`/site.webmanifest${iconV}`} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     {preconnect.map((href) => <link rel="preconnect" href={href} crossorigin />)}
     {fontPreload.map((href) => <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />)}
