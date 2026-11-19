@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import SubChrome from '../components/shared/SubChrome.astro';
+import Footer from '../components/home/Footer.astro';
+import * as i from '../components/shared/icons';
+import { site } from '../data/site';
+import { workFonts, workScripts } from '../data/assets';
+---
+<Base title={`Page not found | ${site.fullName}`} noindex fontCss={workFonts} css={['/css/work.css']} scripts={workScripts}>
+  <SubChrome />
+  <main id="main">
+    <section class="pf-hero nf"><div class="wrap">
+      <!-- an empty Figma frame: selection box, handles, name tag and a 0 × 0 size label -->
+      <div class="nf-frame" aria-hidden="true">
+        <span class="nf-name">frame-404</span>
+        <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
+        <span class="nf-big">404</span>
+        <span class="nf-dim">0 × 0</span>
+      </div>
+      <h1 class="pf-h1">This frame is <span class="o">empty</span></h1>
+      <div class="pf-leadrow"><p class="pf-sub">The page you’re looking for moved or never existed. Let’s get you back to something real.</p></div>
+      <div class="nf-cta">
+        <a class="wsimple-btn" href="/">Back to home<Fragment set:html={i.arrowR} /></a>
+        <a class="wsimple-btn nf-ghost" href="/work">See my work</a>
+      </div>
+    </div></section>
+  </main>
+  <Footer home={false} />
+</Base>
+
+<style is:global>
+  .nf { min-height: 78vh; display: flex; align-items: center; padding-top: 190px !important; padding-bottom: 90px !important; }
+  .nf .wrap { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .nf-frame { position: relative; width: min(340px, 78vw); aspect-ratio: 16 / 9; margin: 0 auto 52px; border: 1.5px dashed #0D99FF; border-radius: 4px; background: rgba(255, 255, 255, .35); display: grid; place-items: center; }
+  .nf-frame i { position: absolute; width: 9px; height: 9px; background: #fff; border: 1.5px solid #0D99FF; border-radius: 2px; }
+  .nf-frame .tl { top: -5px; left: -5px; } .nf-frame .tr { top: -5px; right: -5px; }
+  .nf-frame .bl { bottom: -5px; left: -5px; } .nf-frame .br { bottom: -5px; right: -5px; }
+  .nf-name { position: absolute; top: -24px; left: -1px; font: 700 10px/1 var(--mono, 'Space Mono', monospace); letter-spacing: .04em; color: #fff; background: #0D99FF; padding: 4px 8px; border-radius: 5px 5px 5px 1px; }
+  .nf-big { font: 800 clamp(56px, 12vw, 96px)/1 var(--display, 'Bricolage Grotesque', sans-serif); color: rgba(20, 32, 43, .16); letter-spacing: -.02em; }
+  .nf-dim { position: absolute; bottom: -26px; left: 50%; transform: translateX(-50%); font: 700 10px/1 var(--mono, 'Space Mono', monospace); color: #fff; background: #0D99FF; padding: 4px 8px; border-radius: 5px; }
+  .nf-cta { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .nf-ghost { background: #fff; color: var(--ink, #14202B); box-shadow: inset 0 0 0 1.5px rgba(20, 32, 43, .2); }
+  .nf-ghost:hover { box-shadow: inset 0 0 0 1.5px var(--ink, #14202B), 0 18px 34px -20px rgba(20, 32, 43, .45); }
+</style>
