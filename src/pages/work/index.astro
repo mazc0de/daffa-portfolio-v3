@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+import SubChrome from '../../components/shared/SubChrome.astro';
+import WorkCard from '../../components/shared/WorkCard.astro';
+import Footer from '../../components/home/Footer.astro';
+import * as i from '../../components/shared/icons';
+import { site, projects } from '../../data/site';
+import { workFonts, workScripts } from '../../data/assets';
+const words = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
+const pub = projects.filter((p) => p.link).length;
+const pubLine = `${words[pub] ?? pub} ${pub === 1 ? 'is' : 'are'} public; the rest run inside client apps, kiosks and offices.`;
+---
+<Base title={`Work | ${site.fullName}`} description={`Selected projects by ${site.fullName}: web apps, dashboards, landing pages and kiosk interfaces built with React, Next.js and Tailwind CSS.`} fontCss={workFonts} css={['/css/work.css']} scripts={workScripts}>
+  <SubChrome active="Work" />
+  <main id="main">
+    <section class="pf-hero"><div class="wrap">
+      <span class="pf-kick scribble" role="img" aria-label="selected work"><Fragment set:html={i.scribbleWork} /></span>
+      <h1 class="pf-h1">Work I’ve <span class="o">shipped</span></h1>
+      <div class="pf-leadrow">
+        <p class="pf-sub">Ticketing for ports, kiosks, dashboards and a few websites. I built the frontend on every one, mostly with React, Next.js and Tailwind CSS. {pubLine}</p>
+      </div>
+    </div></section>
+    <section><div class="wrap">
+      <div class="wk-grid" id="wkGrid">{projects.map((p) => <WorkCard p={p} />)}<div class="pf-empty">nothing in this category yet. try another filter.</div></div>
+      <div class="wsimple reveal"><span class="wsimple-eb">have one in mind?</span><a class="wsimple-btn" href="/contact">Talk with me<Fragment set:html={i.arrowR} /></a></div>
+    </div></section>
+  </main>
+  <Footer home={false} />
+</Base>

@@ -1,0 +1,98 @@
+---
+import Base from '../../layouts/Base.astro';
+import SubChrome from '../../components/shared/SubChrome.astro';
+import WorkCard from '../../components/shared/WorkCard.astro';
+import Footer from '../../components/home/Footer.astro';
+import * as i from '../../components/shared/icons';
+import { site, projects, type Project } from '../../data/site';
+import { caseFonts, caseScripts, srcset } from '../../data/assets';
+
+export function getStaticPaths() {
+  return projects.map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+const { p } = Astro.props as { p: Project };
+const cs = p.caseStudy;
+const more = projects.filter((x) => x.slug !== p.slug).slice(0, 2);
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<Base title={`${p.name} case study | ${site.fullName}`} description={cs.description} fontCss={caseFonts} css={['/css/case.css']} scripts={caseScripts}>
+  <SubChrome active="Work" />
+  <main id="main">
+    <div class="cs">
+      <section class="cs-w cs-hero">
+        <h1 class="cs-title cs-rv">{cs.title}</h1>
+        <p class="cs-lede cs-rv">{cs.lede}</p>
+        <div class="cs-meta cs-rv">
+          {cs.facts.map((f) => <div><span class="l">{f.k}</span><span class="v">{f.v}</span></div>)}
+          {cs.live && <a class="go" href={cs.live.url} target="_blank" rel="noopener"><span class="l">Live site</span><span class="v">{cs.live.label} <i><Fragment set:html={i.arrowUR} /></i></span></a>}
+        </div>
+      </section>
+      <div class="cs-cover" id="csCover"><img src={p.image} srcset={srcset(p.image, [640, 1024], 1600)} sizes="(max-width: 620px) max(100vw, 108vh), max(100vw, min(177vh, 1690px))" alt={`${p.name}, ${p.platform.toLowerCase()} screenshot`} width="1600" height="900" fetchpriority="high"></div>
+
+      <section class="cs-w cs-sec">
+        <p class="cs-state" data-fill>{cs.statement}</p>
+        {cs.under && <p class="cs-p cs-under cs-rv">{cs.under}</p>}
+      </section>
+
+      {cs.look && (
+      <section class="cs-w cs-sec">
+        <div class="cs-head"><h2 class="cs-h2 cs-rv">{cs.look.heading}</h2><p class="cs-p cs-rv">{cs.look.body}</p></div>
+        <div class="cs-look">
+          <div class="cs-card cs-spec cs-rv"><span class="cs-k">Type</span><div class="cs-aa">
+            {cs.look.fonts.map((f) => <figure><span class="g" style={`font-family:'${f.family}';font-weight:${f.weight}`}>Aa</span><b style={`font-family:'${f.family}';font-weight:${f.weight}`}>{f.family}</b><span class="r">{f.role}</span></figure>)}
+          </div></div>
+          <div class="cs-card cs-pal cs-rv">
+            {cs.look.palette.map((c) => <button data-hex={c.hex} style={`background:${c.hex};color:${c.dark ? '#fff' : '#14202B'}`}><b>{c.name}</b><em>{c.hex}</em><i>click to copy</i></button>)}
+          </div>
+          <div class="cs-card cs-shot cs-rv"><img src={cs.look.shot} alt={`${p.name} homepage`} loading="lazy"></div>
+        </div>
+      </section>
+      )}
+
+      {cs.tour && (
+      <section class="cs-w cs-sec">
+        <div class="cs-head"><h2 class="cs-h2 cs-rv">{cs.tour.heading}</h2><p class="cs-p cs-rv">{cs.tour.body}</p></div>
+        <div class="cs-tour" id="csTour">
+          <div class="cs-steps">
+            {cs.tour.steps.map((s, k) => <div class="cs-step" data-x={s.x.toFixed(3)} data-y={s.y.toFixed(4)} data-z={s.z}><span class="n">{pad(k + 1)}</span><h3>{s.title}</h3><p>{s.body}</p></div>)}
+          </div>
+          <div class="cs-stage">
+            <div class="cs-view"><div class="cs-canvas" id="csCanvas"><img src={cs.tour.page} alt={`The full ${p.name} homepage`} loading="lazy"></div>
+              <span class="cs-hud"><i id="csHudN">1</i><span id="csHudT">{cs.tour.steps[0]?.title}</span></span><span class="cs-zoomv" id="csZoom">100%</span></div>
+          </div>
+        </div>
+      </section>
+      )}
+
+      {cs.strip && cs.strip.items.length > 1 && (
+      <section class="cs-sec">
+        <div class="cs-w"><div class="cs-head"><h2 class="cs-h2 cs-rv">{cs.strip.heading}</h2><p class="cs-p cs-rv">{cs.strip.body}</p></div></div>
+        <div class="cs-stripwrap cs-rv">
+          <div class="cs-strip" id="csStrip">
+            {cs.strip.items.map((it) => <div class="cs-it w"><span class="lab">{it.label}</span><img src={it.image} alt={`${p.name}, ${it.label}`} loading="lazy"></div>)}
+            {cs.live && <div class="cs-it d" style={`background:${p.accent};color:#fff`}><span class="lab" style="color:inherit;opacity:.7">Live site</span><b>See it running at {cs.live.label}</b></div>}
+          </div>
+          <div class="cs-bar"><i id="csBar"></i></div>
+        </div>
+      </section>
+      )}
+
+      <section class="cs-w cs-sec">
+        <div class="cs-head"><h2 class="cs-h2 cs-rv">{cs.process.heading}</h2><p class="cs-p cs-rv">{cs.process.body}</p></div>
+        <div class="cs-line" id="csLine" style={`--n:${cs.process.nodes.length}`}><span class="cs-track"></span><span class="cs-fill" id="csFill"></span>
+          {cs.process.nodes.map((n, k) => <div class="cs-node"><span class="n">{pad(k + 1)}</span><b>{n.title}</b><p>{n.body}</p></div>)}
+        </div>
+      </section>
+
+      <section class="cs-w cs-more">
+        <h2 class="cs-h2c cs-rv">More work</h2>
+        <p class="cs-p cs-sub cs-rv">Two more projects I built the frontend for.</p>
+        <div class="wk-grid cs-rv">{more.map((x) => <WorkCard p={x} />)}</div>
+        <div class="cs-allw cs-rv"><a class="cs-mb" href="/work">See all work →</a></div>
+      </section>
+    </div>
+    <div class="cs-dcur" id="csDcur">DRAG</div>
+    <div class="cs-toast" id="csToast">Copied</div>
+  </main>
+  <Footer home={false} />
+</Base>
