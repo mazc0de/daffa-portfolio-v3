@@ -1,0 +1,70 @@
+---
+import Base from '../layouts/Base.astro';
+import SubChrome from '../components/shared/SubChrome.astro';
+import Footer from '../components/home/Footer.astro';
+import * as i from '../components/shared/icons';
+import { site } from '../data/site';
+import { contactFonts, contactScripts } from '../data/assets';
+const brandInitial = site.brand[0].toUpperCase();
+const mateInitial = site.teammate[0].toUpperCase();
+// send buttons: the brief opens in WhatsApp or the visitor's email app (no form backend)
+const waIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>';
+const mailIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>';
+const utc = `UTC${site.location.utcOffsetMinutes >= 0 ? '+' : '−'}${Math.abs(site.location.utcOffsetMinutes) / 60}`;
+---
+<Base title={`Contact | ${site.fullName}`} description={`Contact ${site.fullName}, a frontend developer in ${site.location.city}, Indonesia. Send a brief for your website, web app or dashboard.`} fontCss={contactFonts} css={['/css/contact.css']} scripts={contactScripts}>
+  <SubChrome clouds="contact" />
+  <main id="main">
+    <section class="cc-hero"><div class="wrap">
+      <span class="cc-kick scribble" role="img" aria-label="say hello"><Fragment set:html={i.scribbleContact} /></span>
+      <h1 class="cc-h1">Show me<br><span class="o">the idea.</span></h1>
+      <p class="cc-sub">It’s just me here, so every message is read by the person who’ll build it. Tell me what you’re working on and you’ll hear back <b>within a day</b>.</p>
+      <div class="cc-fpin p1"><span class="av" style="background:var(--brand)">{brandInitial}</span><span class="tx">I read every single one ✦</span></div>
+      <div class="cc-fpin p2"><span class="av" style="background:#0D99FF">{mateInitial}</span><span class="tx">can confirm, replies fast</span></div>
+    </div></section>
+    <section><div class="wrap"><div class="cc-grid">
+      <div class="cc-card reveal">
+        <div class="cc-bar">
+          <span class="cc-file"><i></i> new-thread.fig</span>
+          <span class="cc-draft">Draft</span>
+          <span class="cc-pres"><span class="cc-av" style="background:var(--brand)">{brandInitial}</span><span class="cc-av" style="background:#0D99FF">{mateInitial}</span></span>
+        </div>
+        <div class="cc-body">
+          <p class="cc-intro">Rough is fine. A messy idea today beats a polished brief in three weeks.</p>
+          <form id="ccForm" autocomplete="on" novalidate>
+            <div class="cc-row two">
+              <label class="cc-field"><span class="cc-lab">Who are you</span><input id="ccName" name="name" class="cc-in" type="text" placeholder="Name, and what you do" autocomplete="name"></label>
+              <label class="cc-field"><span class="cc-lab">Company / link</span><input id="ccCo" name="company" class="cc-in" type="text" placeholder="A site or handle I can peek at"></label>
+            </div>
+            <label class="cc-field" style="margin-bottom:4px"><span class="cc-lab">The brief <b>*</b></span><textarea id="ccMsg" name="message" class="cc-ta" required aria-describedby="ccNote" placeholder="What are you building, who is it for, and roughly when does it need to be live? A Figma link, budget or bullet points are all welcome. I’ll take it from there."></textarea></label>
+            <div class="cc-send">
+              {site.whatsapp && <button type="submit" class="cc-btn" data-via="wa"><Fragment set:html={waIcon} />Send via WhatsApp</button>}
+              <button type="submit" class={site.whatsapp ? 'cc-btn alt' : 'cc-btn'} data-via="mail"><Fragment set:html={mailIcon} />Send via email</button>
+            </div>
+            <p class="cc-note cc-note-b" id="ccNote">No form backend, no CRM. Your brief opens in WhatsApp or your own email app, ready to send.</p>
+          </form>
+          <div id="ccDone" class="cc-done" role="status">
+            <div class="cc-done-i"><Fragment set:html={i.check} /></div>
+            <div class="cc-done-h">Almost there.</div>
+            <p class="cc-done-p" id="ccDoneP">Your brief is ready in WhatsApp. Hit send there and I’ll reply within a day.</p>
+            <button type="button" class="cc-copy cc-back" id="ccBack">edit the brief</button>
+          </div>
+        </div>
+      </div>
+      <div class="cc-side">
+        <div class="cc-scard reveal">
+          <div class="cc-stop"><b></b> still like email?</div>
+          <a class="cc-big" href={`mailto:${site.email}`}>{site.email}</a>
+          <p class="cc-mut">Forward a deck, paste a link, or just say hi and I’ll take it from there.</p>
+          <div><button class="cc-copy" id="ccCopy">copy address</button></div>
+        </div>
+        <div class="cc-scard reveal">
+          <div class="cc-live"><i></i> {site.status}</div>
+          <div class="cc-big" style="font-size:20px">Websites, web apps and dashboards</div>
+          <p class="cc-mut">Remote friendly, based in {site.location.city} ({site.location.tzLabel}, {utc}). Happy to work across time zones.</p>
+        </div>
+      </div>
+    </div></div></section>
+  </main>
+  <Footer home={false} />
+</Base>
