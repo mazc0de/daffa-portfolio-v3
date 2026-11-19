@@ -1,0 +1,16 @@
+---
+import * as i from './icons';
+import { site } from '../../data/site';
+const s = site.services;
+---
+<section class="services" id="services">
+  <div class="wrap"><div class="sec-head reveal"><span class="scribble me-scribble">{s.scribble}</span><h2>{s.heading}</h2><span class="note">{s.note}</span></div></div>
+  <div class="sv-story"><div class="sv-pin"><div class="sv-track">
+    {s.items.map((it, k) => {
+      const n = String(k + 1).padStart(2, '0');
+      return (
+        <div class="sv-panel"><div class="sv-card"><div class="sv-tab"><Fragment set:html={i.s18} />{n} {it.tab}</div><span class="sv-hd tl"></span><span class="sv-hd tr"></span><span class="sv-hd bl"></span><span class="sv-hd br"></span><div class="sv-top"><div class="sv-left"><div class="sv-numtile" aria-hidden="true"><span>{n}</span></div><div class="sv-htext"><h3><span class="l1">{it.title}</span><span class="l2">{it.sub}</span></h3><p>{it.short}</p></div></div><div class="sv-shot"><div class="sv-bar"><b></b><b></b><b></b><span class="u"></span></div><div class="sv-imgwrap"><video class="sv-vid" muted loop playsinline preload="none" poster={it.poster} data-src={it.video || undefined} aria-label={`${it.title} preview`}></video></div></div></div><div class="sv-hr"></div><div class="sv-drop sv-open"><button type="button" class="sv-toggle" aria-expanded="true" aria-controls={`sv-reveal-${n}`}><span class="lbl">See process + deliverables</span><span class="ic" aria-hidden="true"><Fragment set:html={i.s36} /></span></button><div class="sv-reveal" id={`sv-reveal-${n}`}><div class="sv-in2"><div class="sv-rcol"><div class="sv-lab">The work</div><p class="sv-desc">{it.desc}</p></div><div class="sv-rcol"><div class="sv-lab">Deliverables</div><div class="sv-dels">{it.deliverables.map((d) => <span>{d}</span>)}</div></div></div></div></div></div></div>
+      );
+    })}
+  </div></div></div>
+</section>

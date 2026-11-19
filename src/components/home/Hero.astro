@@ -1,0 +1,141 @@
+---
+import * as i from './icons';
+import { site } from '../../data/site';
+const h = site.hero;
+const [l1, l2] = h.lines;
+const [pre2, post2] = l2.includes(h.highlight) ? l2.split(h.highlight) : [l2, ''];
+const b = h.badge;
+const primaryExternal = /^https?:/.test(h.primaryHref);
+
+// "Code" view: the same hero written as a tiny component, highlighted at build time.
+// Each line is a list of [token class, text]; the inline script below types it out.
+const [first, ...rest] = site.fullName.split(' ');
+const last = rest.join(' ');
+const v = h.view;
+type Tok = [string, string];
+const code: Tok[][] = [
+  [['k', 'export function'], ['', ' '], ['f', 'Hero'], ['p', '() {']],
+  [['', '  '], ['k', 'return'], ['p', ' (']],
+  [['', '    '], ['t', '<h1'], ['', ' '], ['a', 'className'], ['p', '='], ['s', '"hero"'], ['t', '>']],
+  [['', '      '], ['n', first], ['', ' '], ['t', '<mark>'], ['m', last], ['t', '</mark>']],
+  [['', '    '], ['t', '</h1>']],
+  [['p', '  );']],
+  [['p', '}']],
+];
+---
+<header id="phero">
+  <div class="ph-corner bl">{h.cornerLeft[0]}<br><span class="soft">{h.cornerLeft[1]}</span></div>
+  {h.liveClock ? (
+    <div class="ph-corner br" id="phClock"><span class="ph-day">{site.location.city}</span><br><span class="soft ph-time">{site.location.tzLabel}</span><span class="ph-wx" id="phWx" hidden></span></div>
+  ) : (
+    <div class="ph-corner br">{h.cornerRight[0]}<br><span class="soft">{h.cornerRight[1]}</span></div>
+  )}
+  <div class="ph-col">
+    <div class="ph-ycw"><div class="ph-yc" role="note" aria-label={`${b.pre} ${b.name} ${b.post}`}><i class="h tl"></i><i class="h tr"></i><i class="h bl"></i><i class="h br"></i><span class="yc-pre">{b.pre}</span><span class="yc-mark" aria-hidden="true">{b.mark}</span><span class="yc-comb">{b.name}</span><span class="yc-post">{b.post}</span></div></div>
+    <div class="ph-stage">
+      <canvas id="phPc" aria-hidden="true"></canvas>
+      <h1 class="ph-fallback">{l1} <br>{pre2}{l2.includes(h.highlight) && <span class="hi">{h.highlight}</span>}{post2}</h1>
+      <div class="ph-code" id="phCode" aria-hidden="true">
+        <div class="ph-code-bar"><span class="ph-code-tab">{v.file}</span><span class="ph-code-mode">{v.badge}</span></div>
+        <pre class="ph-code-body"><code>{code.map((line, n) => (
+          <span class="ln">{line.map(([c, t]) => (c ? <span class={c}>{t}</span> : t))}{n === code.length - 1 && <i class="ph-caret"></i>}</span>
+        ))}</code></pre>
+      </div>
+    </div>
+    <div class="ph-hint">{h.hint}</div>
+    <div class="ph-sub" id="phSub"><span class="ph-move">do not drag</span><span class="ph-txt">{h.sub}</span><span class="ph-sel"><b></b><b></b><b></b><b></b></span></div>
+    <div class="ph-cta">
+      <a class="ph-btn primary" href={h.primaryHref} target={primaryExternal ? '_blank' : undefined} rel={primaryExternal ? 'noopener' : undefined}>{h.primaryCta} <Fragment set:html={i.s23} /></a>
+      <a class="ph-btn ghost" href="/work">{h.secondaryCta}</a>
+    </div>
+  </div>
+  <div class="ph-view" id="phView" role="group" aria-label={v.label}>
+    <button type="button" class="on" data-view="design" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 7l3 3"/></svg>{v.design}</button>
+    <button type="button" data-view="code" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 7-5 5 5 5M16 7l5 5-5 5"/></svg>{v.code}</button>
+  </div>
+</header>
+
+<script is:inline>
+  // Design ⇄ Code toggle: swaps the particle name for the code that renders it, typed out.
+  (function () {
+    var hero = document.getElementById('phero'), box = document.getElementById('phCode'), bar = document.getElementById('phView');
+    if (!hero || !box || !bar) return;
+    var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var nodes = [], full = [], timer = 0;
+    (function walk(n) { for (var c = n.firstChild; c; c = c.nextSibling) { if (c.nodeType === 3) { nodes.push(c); full.push(c.data); } else walk(c); } })(box.querySelector('code'));
+    function fill(count) {
+      for (var k = 0; k < nodes.length; k++) { var t = full[k]; nodes[k].data = count > 0 ? t.slice(0, count) : ''; count -= t.length; }
+    }
+    function type() {
+      clearInterval(timer);
+      var total = full.join('').length, n = 0;
+      if (calm) { fill(total); box.classList.add('done'); return; }
+      box.classList.remove('done'); fill(0);
+      timer = setInterval(function () {
+        n += 3; fill(n);
+        if (n >= total) { clearInterval(timer); box.classList.add('done'); }
+      }, 16);
+    }
+    function set(view) {
+      var code = view === 'code';
+      if (code === hero.classList.contains('is-code')) return;
+      hero.classList.toggle('is-code', code);
+      bar.querySelectorAll('button').forEach(function (b) { var on = b.dataset.view === view; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+      var pc = window.__phParticles;
+      if (code) { if (pc) pc.scatter(); type(); }
+      else { clearInterval(timer); if (pc) pc.reform(); }
+    }
+    bar.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) set(b.dataset.view); });
+  })();
+
+</script>
+
+{h.liveClock && (
+  <script is:inline define:vars={{ offsetMs: site.location.utcOffsetMinutes * 60_000, tz: site.location.tzLabel }}>
+    // hero corner: day, date and time where Daffa is (location offset), ticking every second
+    (function () {
+      var box = document.getElementById('phClock');
+      if (!box) return;
+      var day = box.querySelector('.ph-day'), time = box.querySelector('.ph-time');
+      // the date is shifted by the location offset, so format it as UTC to read the local wall clock
+      var dayFmt = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+      var timeFmt = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23', timeZone: 'UTC' });
+      function part(parts, type) { for (var k = 0; k < parts.length; k++) if (parts[k].type === type) return parts[k].value; return ''; }
+      function tick() {
+        var d = new Date(Date.now() + offsetMs), q = dayFmt.formatToParts(d);
+        day.textContent = part(q, 'weekday') + ', ' + part(q, 'day') + ' ' + part(q, 'month') + ' ' + part(q, 'year');
+        time.textContent = timeFmt.format(d) + ' ' + tz;
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+  </script>
+)}
+
+<script is:inline>
+  // right corner, under the date: the current weather in the city, sent by the CTA weather script (13.js).
+  // It replaces the time line (the time is already in the top bar); the time stays as the fallback.
+  (function () {
+    var wx = document.getElementById('phWx');
+    if (!wx) return;
+    function label(code, day) {
+      if (code >= 95) return 'thunderstorm';
+      if (code >= 80) return 'showers';
+      if (code >= 71 && code <= 77) return 'snow';
+      if (code >= 61) return 'rain';
+      if (code >= 51) return 'drizzle';
+      if (code === 45 || code === 48) return 'foggy';
+      if (code === 3) return 'cloudy';
+      if (code === 2) return 'partly cloudy';
+      return day ? 'sunny' : 'clear sky';
+    }
+    document.addEventListener('dn:weather', function (e) {
+      var d = e.detail || {};
+      if (typeof d.temp !== 'number' || typeof d.code !== 'number') return;
+      wx.textContent = Math.round(d.temp) + '°C, ' + label(d.code, d.day !== 0);
+      wx.hidden = false;
+      var time = wx.parentNode.querySelector('.ph-time');
+      if (time) time.hidden = true;
+    });
+  })();
+</script>

@@ -1,0 +1,103 @@
+---
+// "How I got here" (from handoff/sections-about-experience.md): work history drawn as Figma's
+// "Version history" panel. Pick a version on the left and its frame opens on the canvas.
+// Keyboard: arrow keys, Home and End move between versions (tabs pattern). Copy lives in `site.experience`.
+import { site } from '../../data/site';
+const x = site.experience;
+const file = `${site.brand.toLowerCase()}-career.fig`;
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+---
+<section class="me-exp" id="experience">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="scribble me-scribble">{x.scribble}</span>
+      <h2>{x.heading}</h2>
+      <span class="note">{x.note}</span>
+    </div>
+
+    <div class="vh reveal">
+      <div class="vh-bar">
+        <span class="vh-file"><b aria-hidden="true"></b>{file}</span>
+        <span class="vh-title">Version history</span>
+      </div>
+
+      <div class="vh-body">
+        <div class="vh-list" role="tablist" aria-orientation="vertical" aria-label="Work history">
+          {x.versions.map((v, k) => (
+            <button
+              class="vh-item"
+              role="tab"
+              type="button"
+              id={`vh-tab-${k}`}
+              aria-controls={`vh-panel-${k}`}
+              aria-selected={k === 0 ? 'true' : 'false'}
+              tabindex={k === 0 ? 0 : -1}
+            >
+              <span class="vh-node" aria-hidden="true"></span>
+              <span class="vh-txt">
+                {v.current && <span class="vh-cur">Current version</span>}
+                <span class="vh-role">{v.role}</span>
+                <span class="vh-meta">{v.company} <span aria-hidden="true">/</span> {v.period}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+
+        <div class="vh-canvas">
+          {x.versions.map((v, k) => (
+            <article class="vh-panel" role="tabpanel" id={`vh-panel-${k}`} aria-labelledby={`vh-tab-${k}`} tabindex="0" hidden={k !== 0}>
+              <span class="vh-flab">{slug(v.company)} / {v.period.replace(/\s/g, '')}</span>
+              <div class="vh-frame">
+                <span class="vh-hd tl"></span><span class="vh-hd tr"></span><span class="vh-hd bl"></span><span class="vh-hd br"></span>
+                <h3 class="vh-h">{v.role}</h3>
+                <p class="vh-where"><b>{v.company}</b> <span>{v.place}</span> <span>{v.period}</span></p>
+                <p class="vh-sum">{v.summary}</p>
+                <ul class="vh-points">{v.points.map((pt) => <li>{pt}</li>)}</ul>
+                <div class="vh-tags">{v.tags.map((t) => <span class="tchip">{t}</span>)}</div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  // version history tabs: click or arrow keys pick a version; with no JS the first one still shows
+  (function () {
+    var list = document.querySelector('.vh-list');
+    if (!list) return;
+    var tabs = Array.prototype.slice.call(list.querySelectorAll('[role="tab"]'));
+    function select(idx, focus) {
+      tabs.forEach(function (t, k) {
+        var on = k === idx;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        var panel = document.getElementById(t.getAttribute('aria-controls') || '');
+        if (panel) panel.hidden = !on;
+      });
+      if (focus) tabs[idx].focus();
+    }
+    // stacked layout (≤900px): the canvas sits below the list, so bring the opened version into view
+    var stacked = matchMedia('(max-width: 900px)'), calm = matchMedia('(prefers-reduced-motion: reduce)');
+    function reveal(idx) {
+      if (!stacked.matches) return;
+      var panel = document.getElementById(tabs[idx].getAttribute('aria-controls') || '');
+      if (panel) panel.scrollIntoView({ block: 'nearest', behavior: calm.matches ? 'auto' : 'smooth' });
+    }
+    tabs.forEach(function (t, k) {
+      t.addEventListener('click', function () { select(k); reveal(k); });
+      t.addEventListener('keydown', function (e) {
+        var last = tabs.length - 1, n = -1;
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') n = k === last ? 0 : k + 1;
+        else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') n = k === 0 ? last : k - 1;
+        else if (e.key === 'Home') n = 0;
+        else if (e.key === 'End') n = last;
+        if (n < 0) return;
+        e.preventDefault();
+        select(n, true);
+      });
+    });
+  })();
+</script>

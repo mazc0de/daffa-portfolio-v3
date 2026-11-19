@@ -1,0 +1,26 @@
+---
+import * as i from './icons';
+import { projects } from '../../data/site';
+import { srcset } from '../../data/assets';
+// the track is rendered 3x so the JS can loop infinitely (it normalises to the middle set)
+const loops = [0, 1, 2];
+---
+<section class="omw" id="work">
+  <div class="omw-slider" id="omwSlider"><div class="omw-track" id="omwTrack">
+    {loops.map((set) => projects.map((p, idx) => {
+      // on load the slider centres the first slide of the middle set, with the last slide of set 0 and
+      // the second slide of set 1 beside it: only those three load eagerly
+      const eager = (set === 1 && idx < 2) || (set === 0 && idx === projects.length - 1);
+      // sets 0 and 2 are visual copies for the infinite loop: hide them from screen readers and the tab order
+      const copy = set !== 1;
+      return (
+        <div class="omw-slide" data-i={idx} aria-hidden={copy ? 'true' : undefined}><div class="omw-shell" style={`--ac:${p.accent}`}><span class="omw-lab" aria-hidden="true">{p.slug}</span><span class="omw-h tl"></span><span class="omw-h tr"></span><span class="omw-h bl"></span><span class="omw-h br"></span><div class="omw-card"><div class="omw-frame"><img class="omw-photo" src={p.image} srcset={srcset(p.image, [640, 1024], 1600)} sizes="(max-width: 900px) 78vw, 53vw" alt="" width="1600" height="900" loading={eager ? 'eager' : 'lazy'} decoding="async"><a class="omw-cs" href={`/work/${p.slug}`} data-cs="1" tabindex={copy ? -1 : undefined} aria-label={`Read the ${p.name} case study`}><Fragment set:html={i.s46} /></a></div><div class="omw-cin"><span class="omw-nm">{p.name}</span><span class="omw-mt">{p.tags.map((t) => <span>{t}</span>)}</span></div></div></div></div>
+      );
+    }))}
+  </div></div>
+  <div class="omw-dots" id="omwDots">{projects.map((p, idx) => <button type="button" data-i={idx} class={idx === 0 ? 'on' : undefined} aria-current={idx === 0 ? 'true' : undefined} aria-label={`Show ${p.name}`}></button>)}</div>
+  <div class="omw-arrows">
+    <button id="omwPrev" aria-label="Previous project"><Fragment set:html={i.s47} /></button>
+    <button id="omwNext" aria-label="Next project"><Fragment set:html={i.s48} /></button>
+  </div>
+</section>

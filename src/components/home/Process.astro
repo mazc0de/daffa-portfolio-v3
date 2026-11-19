@@ -1,0 +1,38 @@
+---
+// Work log: real moments from the CV, shown as a Slack-style thread.
+// who: 'me' renders as Daffa (brand avatar, slides in from the left); 'team' uses its name/color (from the right).
+import * as i from './icons';
+import { site } from '../../data/site';
+const p = site.process;
+type Msg = { who: string; name?: string; color?: string; tm: string; tx: string; file?: string; react?: string };
+// flatten steps + messages so every row gets its sequential stagger index (--i)
+type Row = { kind: 'step'; label: string } | ({ kind: 'msg' } & Msg);
+const rows: Row[] = p.steps.flatMap((s) => [{ kind: 'step', label: s.step } as Row, ...(s.msgs as Msg[]).map((m) => ({ kind: 'msg', ...m }) as Row)]);
+const initial = site.brand[0].toUpperCase();
+---
+<section class="process" id="process">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="scribble me-scribble">{p.scribble}</span><h2>{p.heading}</h2><span class="note">{p.note}</span></div>
+    <div class="thread reveal">
+      <span class="tab t-tab"><Fragment set:html={i.s32} /> #{p.channel.toUpperCase()}</span>
+      <div class="t-head">
+        <div class="ch"><span class="hash">#</span> {p.channel}</div>
+        <div class="on"><span class="avs"><span class="av av-logo">{initial}</span>{p.team.map((t) => <span class="av" style={`background:${t.color}`}>{t.name[0]}</span>)}</span><span class="grn"></span> {p.team.length + 1} online</div>
+      </div>
+      <div class="t-body stagger">
+        {rows.map((r, k) => r.kind === 'step' ? (
+          <div class="step-div" style={`--i:${k}`}><span>{r.label}</span></div>
+        ) : (
+          <div class={`msg ${r.who === 'me' ? 'studio' : 'client'}`} style={`--i:${k}`}>
+            {r.who === 'me' ? <div class="av av-logo">{initial}</div> : <div class="av" style={r.color ? `background:${r.color}` : undefined}>{(r.name ?? 'T')[0]}</div>}
+            <div class="body"><div class="meta"><span class="nm">{r.who === 'me' ? site.brand : r.name}</span><span class="tm">{r.tm}</span></div><div class="tx">{r.tx}</div>
+              {r.file && <span class="file"><Fragment set:html={r.file.endsWith('.fig') ? i.s33 : i.s34} /> {r.file}</span>}
+              {r.react && <span class="react">{r.react.split(' ')[0]} <span class="c">{r.react.split(' ')[1]}</span></span>}
+            </div>
+          </div>
+        ))}
+        <div class="typing" style={`--i:${rows.length}`}><div class="av"></div><div class="dots"><span></span><span></span><span></span></div></div>
+      </div>
+    </div>
+  </div>
+</section>

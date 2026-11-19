@@ -1,0 +1,15 @@
+---
+import * as i from './icons';
+import { site } from '../../data/site';
+const d = site.dropfun;
+---
+<section class="dropfun" id="dropfun">
+  <span class="df-glow"></span>
+  <div class="wrap reveal">
+    <span class="df-lab scribble"><Fragment set:html={i.s15} /></span>
+    <h2 class="df-h2">{d.heading[0]}<br>{d.heading[1]} <span class="o">{d.heading[2]}</span></h2>
+    <p class="df-p">{d.sub}</p>
+    <button class="btn df-btn" id="dropBtn" type="button"><span class="dbt">{d.button}</span> <Fragment set:html={i.s16} /></button>
+  </div>
+</section>
+<div id="dropStage" aria-hidden="true"></div>

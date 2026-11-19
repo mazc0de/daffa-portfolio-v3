@@ -1,0 +1,54 @@
+---
+import * as i from './icons';
+import { site } from '../../data/site';
+interface Props { home?: boolean; loader?: boolean }
+const { home = true, loader = true } = Astro.props;
+// on the homepage anchors must be "#id" so the scrollspy can find them
+const href = (h: string) => (home && h.startsWith('/#') ? h.slice(1) : h);
+// loading screen shows the full name; the ruler keeps the short brand
+const [first, ...rest] = site.fullName;
+---
+{loader && (
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="ld-grid"></div>
+  <div class="ld-stage">
+    <div class="ld-sel">
+      <span class="ld-mark"><span class="o">{first}</span>{rest.join('')}</span>
+      <i class="h tl"></i><i class="h tr"></i><i class="h bl"></i><i class="h br"></i>
+      <span class="ld-dim">1280 × 196</span>
+    </div>
+    <div class="ld-bar"><span></span></div>
+  </div>
+</div>
+)}
+
+<div class="sky" aria-hidden="true">
+  {['a c1','b c2','a c3','b c4','a c5','b c6','a c7','b c8','a c9'].map((c) => <span class={`cloud ${c}`}></span>)}
+</div>
+
+<div class="ruler" aria-hidden="true">
+  <div class="r-logo"><b class="r-mark"></b> {site.brand.toUpperCase()}<span class="r-rest">{site.fullName.slice(site.brand.length).trim().toUpperCase()}</span></div>
+  <div class="ticks"><canvas id="rulerTop"></canvas><div class="r-fill" id="rFill"></div><span class="r-pct" id="rPct">0%</span></div>
+  <div class="r-zoom"><span class="dot"></span> LIVE · <span id="ct">--:--:-- --</span></div>
+</div>
+
+<div class="topbar">
+  <div class="pill status-pill"><span class="dot"></span> {site.status}</div>
+  <nav class="pill nav-pill">
+    {site.nav.map((n) => <a class={n.cls} href={href(n.href)}>{n.label}</a>)}
+    <a class="cta" href="/contact">Contact</a>
+  </nav>
+  <div class="tb-end">
+    <a class="pill cv-pill" href={site.cv.href} download={site.cv.file}><Fragment set:html={i.dl} /> CV</a>
+    <a class="pill mail-pill" href={`mailto:${site.email}`}><Fragment set:html={i.s11} /> {site.email}</a>
+  </div>
+</div>
+
+<div class="cursor-layer" id="cursorLayer" aria-hidden="true">
+  <div class="fcursor" id="curYou"><Fragment set:html={i.s12} /><span class="name" style="background:#0D99FF">You</span></div>
+  <div class="fcursor" id="curMate" style="opacity:.9"><Fragment set:html={i.s13} /><span class="name" style="background:#F0531C">{site.teammate}</span></div>
+</div>
+
+<div class="grain" aria-hidden="true"></div>
+
+<a id="top"></a>

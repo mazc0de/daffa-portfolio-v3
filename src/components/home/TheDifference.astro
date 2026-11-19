@@ -1,0 +1,39 @@
+---
+import * as i from './icons';
+import { site } from '../../data/site';
+const d = site.difference;
+const initial = site.brand[0].toUpperCase();
+---
+<section class="diff" id="why">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="scribble me-scribble">{d.scribble}</span>
+      <h2>{d.heading[0]}<br>{d.heading[1]}</h2>
+    </div>
+    <div class="figwin diff-win reveal">
+      <div class="figbar" aria-hidden="true">
+        <div class="lights"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+        <div class="fname">the-difference.fig</div>
+        <div class="fright"><span class="zoom">100%</span><span class="avs"><span class="av" style="background:#F0531C">{initial}</span><span class="av" style="background:#0D99FF">{site.teammate[0]}</span></span></div>
+      </div>
+      <div class="diff-body">
+        <div class="diff-frame diff-them">
+          <div class="diff-fhead"><span class="diff-flock"><Fragment set:html={i.s42} /></span><span class="diff-fname">{d.themLabel}</span><span class="diff-fmeta">locked</span></div>
+          <ul class="diff-list">{d.them.map((t) => <li><span class="diff-mark x"><Fragment set:html={i.s43} /></span><b>{t}</b></li>)}</ul>
+        </div>
+        <div class="diff-spine"><span class="diff-vs">vs</span></div>
+        <div class="diff-frame diff-us">
+          <span class="diff-h tl"></span><span class="diff-h tr"></span><span class="diff-h bl"></span><span class="diff-h br"></span>
+          <span class="diff-dim" aria-hidden="true">{site.brand} · selected</span>
+          <div class="diff-fhead"><span class="diff-favatar">{initial}</span><span class="diff-fname">{site.brand}</span><span class="diff-fmeta">editing</span></div>
+          <ul class="diff-list">{d.us.map((t) => <li><span class="diff-mark c"><Fragment set:html={i.s44} /></span><b>{t}</b></li>)}</ul>
+          <span class="diff-pin"><span class="diff-pinb"><Fragment set:html={i.s44} /></span><span class="tag">pick this one</span></span>
+        </div>
+      </div>
+      <div class="diff-foot">
+        <p>{d.foot[0]} <span class="o">{d.foot[1]}</span></p>
+        <a class="btn ghost" href="/work">see the work <Fragment set:html={i.s45} /></a>
+      </div>
+    </div>
+  </div>
+</section>

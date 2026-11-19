@@ -1,0 +1,20 @@
+---
+import * as i from './icons';
+import { site } from '../../data/site';
+---
+<section class="cta">
+  <div class="wrap reveal">
+    <div class="sec-head reveal">
+      <span class="scribble"><Fragment set:html={i.s14} /></span>
+      <h2 id="dnHead">Me <span class="o">too.</span></h2>
+      <span class="note" id="dnTape">the sun’s up in {site.location.city.toLowerCase()}</span>
+    </div>
+    <div class="dn">
+      <div class="dn-glyph" id="dnGlyph"></div>
+      <p class="dn-sub" id="dnSub">Perfect light for building in {site.location.city}, so send it over.</p>
+      <div class="dn-actions">
+        <a class="btn dn-big" id="dnCta" href="/contact">{site.cta.button}</a>
+      </div>
+    </div>
+  </div>
+</section>

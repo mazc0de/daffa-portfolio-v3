@@ -1,0 +1,20 @@
+---
+import * as i from './icons';
+import { site } from '../../data/site';
+const t = site.testimonials;
+---
+<section class="tst" id="reviews">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="scribble"><Fragment set:html={i.s37} /></span><h2>{t.heading[0]} <span class="o">{t.heading[1]}</span></h2><span class="note">{t.note}</span></div>
+    <div class="tst-vrow">
+      {t.videos.map((v) => (
+        <div class="tv" data-video={v.video || undefined}><video muted loop playsinline preload="none" poster={v.poster} data-src={v.video || undefined}></video><span class="veil"></span><button class="play" aria-label="Play video testimonial"><i><Fragment set:html={i.s38} /></i><b>PLAY</b></button><span class="vfy"><Fragment set:html={i.s39} />VERIFIED</span><div class="cap"><div class="stats">{v.stats.map((s) => <div><b>{s.up && <i class="up"><Fragment set:html={i.s40} /></i>}{s.v}<em>{s.u}</em></b><span>{s.l}</span></div>)}</div><div class="who"><div class="idn"><span class="nm">{v.name}</span><i class="sep"></i><span class="rl">{v.role}</span></div><span class="co">{v.company}</span></div></div></div>
+      ))}
+    </div>
+    <div class="tst-trow">
+      {t.comments.map((c) => (
+        <div class="cmt" style={`--ac:${c.accent}`}><div class="cmt-h"><span class="av"><img src={c.avatar} alt={c.name} loading="lazy" onerror={`this.remove();this.parentNode.textContent='${c.name[0]}'`}></span><div><div class="nm">{c.name}</div><div class="rl">{c.role}</div></div><span class="t">{c.t}</span></div><q>{c.q}</q><div class="react"><span class="h">♥ {c.likes}</span><span>👍 {c.thumbs}</span><span class="resolved"><i></i>{c.badge}</span></div></div>
+      ))}
+    </div>
+  </div>
+</section>

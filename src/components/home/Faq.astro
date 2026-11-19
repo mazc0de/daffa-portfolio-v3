@@ -1,0 +1,23 @@
+---
+import * as i from './icons';
+import { site } from '../../data/site';
+const f = site.faq;
+---
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="scribble"><Fragment set:html={i.s17} /></span><h2>{f.heading}</h2><span class="note">{f.note}</span></div>
+    <div class="fx-frames reveal">
+      {f.items.map((q, k) => (
+        <div class="fx-qa">
+          <span class="fx-tab"><Fragment set:html={i.s18} />{q.file}.frame</span>
+          <div class="fx-card">
+            <span class="fx-sel"></span><span class="fx-h tl"></span><span class="fx-h tr"></span><span class="fx-h bl"></span><span class="fx-h br"></span>
+            <span class="fx-dim" data-dim></span>
+            <button class="fx-head" aria-expanded="false"><span class="fx-ix">{String(k + 1).padStart(2, '0')}</span><span class="fx-q">{q.q}</span><span class="fx-pm"></span></button>
+            <div class="fx-a"><div><div class="fx-inspect"><div class="fx-prop"><div class="fx-k">answer</div><div class="fx-v" set:html={q.a}></div></div></div></div></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

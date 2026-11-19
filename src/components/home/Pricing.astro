@@ -1,0 +1,58 @@
+---
+import * as i from './icons';
+import { site } from '../../data/site';
+const p = site.pricing;
+const d = p.plans.design, v = p.plans.dev;
+---
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="scribble"><Fragment set:html={i.s24} /></span><h2>{p.heading[0]} <span class="o">{p.heading[1]}</span></h2><span class="note">{p.note}</span></div>
+    <div id="lp-root">
+    <span class="flabel">pricing.fig</span>
+    <div class="card">
+      <div class="disp">
+        <div class="dleft">
+          <div class="gauge"><span class="cur">{p.currency}</span><span class="amt">{d.amt}</span><span class="per">/month</span></div>
+          <div class="pname"><b class="pnm">{d.name}</b> &#183; billed monthly <span class="was">{d.was}</span></div>
+        </div>
+        <div class="hero-side">
+          <span class="badge"><span class="ld"></span>{p.badge}</span>
+          <div class="hsum">
+            <div class="hrow"><Fragment set:html={i.s25} /><b class="hsum-req">{d.req}</b></div>
+            <div class="hrow"><Fragment set:html={i.s25} /><span><b class="hsum-cnt">{p.base.length} things</b> included</span></div>
+            <div class="hrow"><Fragment set:html={i.s25} />{p.delivery}</div>
+          </div>
+          <div class="proof"><span class="avs"><span class="av" style="background:#F0531C">&#128525;</span><span class="av" style="background:#0D99FF">&#129395;</span><span class="av" style="background:#14202b">&#128526;</span></span><span class="ptext" set:html={p.proof}></span></div>
+        </div>
+      </div>
+      <div class="lower">
+      <div class="ends">
+        <span class="a on ea"><span class="pl">{d.short}</span><span class="pr">{p.currency}{d.amt}</span></span>
+        <span class="a r eb"><span class="poptag">{v.tag}</span><span class="pl">{v.short}</span><span class="pr">{p.currency}{v.amt}</span></span>
+      </div>
+      <div class="track"><div class="fill"></div><div class="handle">
+        <Fragment set:html={i.s26} />
+        <Fragment set:html={i.s27} />
+      </div></div>
+      <div class="hint">slide the lever, or tap a side</div>
+      <hr class="pdash">
+      <ul class="feats-base"></ul>
+      <div class="unlock">
+        <span class="ul-line"></span>
+        <span class="ul-chip"><span class="lk">
+          <Fragment set:html={i.s28} />
+          <Fragment set:html={i.s29} />
+        </span><span class="ul-txt">Unlocks with {v.short}</span></span>
+        <span class="ul-line"></span>
+      </div>
+      <ul class="feats-dev"></ul>
+      <div class="ctarow">
+        <a class="cta" href={p.ctaHref}>{p.ctaLabel} <Fragment set:html={i.s30} /></a>
+        <span class="reassure">{p.reassure}</span>
+      </div>
+      </div>
+    </div>
+    <span class="sel"></span><span class="hnd tl"></span><span class="hnd tr"></span><span class="hnd bl"></span><span class="hnd br"></span>
+  </div>
+  </div>
+</section>

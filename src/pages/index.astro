@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/home/Chrome.astro';
+import Hero from '../components/home/Hero.astro';
+import WorkSlider from '../components/home/WorkSlider.astro';
+import About from '../components/home/About.astro';
+import Experience from '../components/home/Experience.astro';
+import Process from '../components/home/Process.astro';
+import Services from '../components/home/Services.astro';
+import TheDifference from '../components/home/TheDifference.astro';
+import Testimonials from '../components/home/Testimonials.astro';
+import Cta from '../components/home/Cta.astro';
+import Pricing from '../components/home/Pricing.astro';
+import Faq from '../components/home/Faq.astro';
+import DropFun from '../components/home/DropFun.astro';
+import Footer from '../components/home/Footer.astro';
+import { homeFonts, homeFontPreload } from '../data/assets';
+
+// interaction scripts, in their original order (see public/js/home/README.md)
+const scripts = Array.from({ length: 23 }, (_, i) => `/js/home/${String(i).padStart(2, '0')}.js`);
+---
+<Base scripts={scripts} fontCss={homeFonts} fontPreload={homeFontPreload} preconnect={['https://api.open-meteo.com']} css={['/css/home.css']}>
+  <Chrome />
+  <main id="main">
+  <Hero />
+  <WorkSlider />
+  <About />
+  <Experience />
+  {/* Work log ("Real work. Real numbers.") hidden for now: uncomment to show it again */}
+  {/* <Process /> */}
+  <Services />
+  <TheDifference />
+  {/* Testimonials ("Don't take it from us") hidden for now: uncomment to show it again */}
+  {/* <Testimonials /> */}
+  <Cta />
+  {/* Pricing ("Pick your plan.") hidden for now: uncomment to show it again */}
+  {/* <Pricing /> */}
+  {/* FAQ ("The nosy section") hidden for now: uncomment to show it again */}
+  {/* <Faq /> */}
+  <DropFun />
+  </main>
+  <Footer />
+</Base>
