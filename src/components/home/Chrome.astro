@@ -1,6 +1,7 @@
 ---
 import * as i from './icons';
 import { site } from '../../data/site';
+import CvPreview from '../shared/CvPreview.astro';
 interface Props { home?: boolean; loader?: boolean }
 const { home = true, loader = true } = Astro.props;
 // on the homepage anchors must be "#id" so the scrollspy can find them
@@ -39,7 +40,7 @@ const [first, ...rest] = site.fullName;
     <a class="cta" href="/contact">Contact</a>
   </nav>
   <div class="tb-end">
-    <a class="pill cv-pill" href={site.cv.href} download={site.cv.file}><Fragment set:html={i.dl} /> CV</a>
+    <a class="pill cv-pill" href={site.cv.href} download={site.cv.file} data-cv-preview aria-haspopup="dialog"><Fragment set:html={i.dl} /> CV</a>
     <a class="pill mail-pill" href={`mailto:${site.email}`}><Fragment set:html={i.s11} /> {site.email}</a>
   </div>
 </div>
@@ -52,3 +53,5 @@ const [first, ...rest] = site.fullName;
 <div class="grain" aria-hidden="true"></div>
 
 <a id="top"></a>
+
+<CvPreview />

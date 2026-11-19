@@ -1,0 +1,73 @@
+---
+// CV preview: links marked data-cv-preview open this dialog (the PDF itself + Download / Open PDF)
+// instead of downloading straight away. The PDF only loads on the first open, so pages pay nothing for it.
+// Browsers without a built-in PDF viewer (Android Chrome) and visitors without JS keep the plain download.
+import { dl } from '../home/icons';
+import { site } from '../../data/site';
+const { href, file } = site.cv;
+---
+<dialog class="cvp" id="cvPreview" aria-labelledby="cvpTitle">
+  <div class="cvp-bar">
+    <span class="cvp-file" id="cvpTitle"><b aria-hidden="true"></b><span>{file}</span></span>
+    <div class="cvp-act">
+      <a class="cvp-btn cvp-ghost" href={href} target="_blank" rel="noopener">Open PDF</a>
+      <a class="cvp-btn" href={href} download={file}><Fragment set:html={dl} />Download</a>
+      <button class="cvp-x" type="button" aria-label="Close CV preview">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+      </button>
+    </div>
+  </div>
+  <div class="cvp-body">
+    <iframe class="cvp-pdf" data-src={`${href}#toolbar=0&navpanes=0&view=FitH`} title={`${site.fullName}'s CV (PDF)`}></iframe>
+  </div>
+</dialog>
+
+<style is:global>
+  /* the site's reset sets margin:0 on everything, which would pin a dialog to the top-left corner */
+  .cvp { position: fixed; inset: 0; margin: auto; width: min(860px, calc(100vw - 32px)); height: calc(100dvh - 48px); max-width: none; max-height: none; padding: 0; border: 0; border-radius: 14px; background: #E9EEF3; color: var(--ink, #14202B); box-shadow: 0 40px 90px -30px rgba(20, 32, 43, .55); overflow: hidden; }
+  .cvp[open] { display: flex; flex-direction: column; animation: cvpIn .28s cubic-bezier(.2, .8, .2, 1); }
+  .cvp::backdrop { background: rgba(20, 32, 43, .55); backdrop-filter: blur(3px); }
+  @keyframes cvpIn { from { opacity: 0; transform: translateY(14px) scale(.98); } }
+  .cvp-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 10px 10px 16px; background: #fff; border-bottom: 1px solid rgba(20, 32, 43, .1); }
+  .cvp-file { display: flex; align-items: center; gap: 9px; min-width: 0; font: 700 12px/1.2 var(--mono, 'Space Mono', monospace); }
+  .cvp-file b { flex: none; width: 18px; height: 18px; border-radius: 5px; background: url(/brand/mark.svg?v=2) center / cover no-repeat #101312; }
+  .cvp-file span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cvp-act { display: flex; align-items: center; gap: 8px; flex: none; }
+  .cvp-btn { display: inline-flex; align-items: center; gap: 7px; height: 38px; padding: 0 16px; border-radius: 999px; background: var(--brand-strong, #C93F0E); color: #fff; font: 700 14px/1 var(--body, 'Hanken Grotesk', sans-serif); text-decoration: none; transition: transform .2s, box-shadow .2s; }
+  .cvp-btn svg { width: 16px; height: 16px; }
+  .cvp-btn:hover { transform: translateY(-1px); box-shadow: 0 12px 24px -14px rgba(201, 63, 14, .8); }
+  .cvp-ghost { background: transparent; color: var(--ink, #14202B); box-shadow: inset 0 0 0 1.5px rgba(20, 32, 43, .2); }
+  .cvp-ghost:hover { box-shadow: inset 0 0 0 1.5px var(--ink, #14202B); }
+  .cvp-x { display: grid; place-items: center; width: 38px; height: 38px; border: 0; border-radius: 999px; background: transparent; color: var(--ink, #14202B); cursor: pointer; }
+  .cvp-x:hover { background: rgba(20, 32, 43, .07); }
+  .cvp-btn:focus-visible, .cvp-x:focus-visible { outline: 3px solid #0D99FF; outline-offset: 2px; }
+  .cvp-body { flex: 1; min-height: 0; display: flex; }
+  .cvp-pdf { flex: 1; width: 100%; height: 100%; border: 0; background: #E9EEF3; }
+  html.cvp-lock { overflow: hidden; }
+  @media (max-width: 600px) {
+    .cvp { width: 100%; height: 100%; border-radius: 0; }
+    .cvp-ghost { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .cvp[open] { animation: none; } }
+</style>
+
+<script is:inline>
+  (function () {
+    var dlg = document.getElementById('cvPreview');
+    // no <dialog> support, or no built-in PDF viewer (Android Chrome): the link keeps downloading the PDF
+    if (!dlg || typeof dlg.showModal !== 'function' || navigator.pdfViewerEnabled === false) return;
+    var root = document.documentElement, frame = dlg.querySelector('.cvp-pdf');
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[data-cv-preview]');
+      if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+      e.preventDefault();
+      if (!frame.src) frame.src = frame.getAttribute('data-src'); // first open: load the PDF now, not with the page
+      root.classList.add('cvp-lock');
+      dlg.showModal();
+    });
+    dlg.querySelector('.cvp-x').addEventListener('click', function () { dlg.close(); });
+    // click on the dimmed area around the dialog closes it
+    dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+    dlg.addEventListener('close', function () { root.classList.remove('cvp-lock'); });
+  })();
+</script>
