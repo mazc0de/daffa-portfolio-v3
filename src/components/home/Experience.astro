@@ -45,7 +45,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(
 
         <div class="vh-canvas">
           {x.versions.map((v, k) => (
-            <article class="vh-panel" role="tabpanel" id={`vh-panel-${k}`} aria-labelledby={`vh-tab-${k}`} tabindex="0" hidden={k !== 0}>
+            <div class="vh-panel" role="tabpanel" id={`vh-panel-${k}`} aria-labelledby={`vh-tab-${k}`} tabindex="0" hidden={k !== 0}>
               <span class="vh-flab">{slug(v.company)} / {v.period.replace(/\s/g, '')}</span>
               <div class="vh-frame">
                 <span class="vh-hd tl"></span><span class="vh-hd tr"></span><span class="vh-hd bl"></span><span class="vh-hd br"></span>
@@ -55,7 +55,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(
                 <ul class="vh-points">{v.points.map((pt) => <li>{pt}</li>)}</ul>
                 <div class="vh-tags">{v.tags.map((t) => <span class="tchip">{t}</span>)}</div>
               </div>
-            </article>
+            </div>
           ))}
         </div>
       </div>
