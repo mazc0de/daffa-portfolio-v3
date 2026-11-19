@@ -1,0 +1,30 @@
+/* Clash Display */
+@font-face {
+  font-family: 'Clash Display';
+  src: url(/fonts/b910457645984ce5.woff2) format('woff2'),
+       url(/fonts/9af9f7772e2179ac.woff) format('woff'),
+       url(/fonts/3b40d8d2fbd517d0.ttf) format('truetype');
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Clash Display';
+  src: url(/fonts/fd52ea6edae3cf16.woff2) format('woff2'),
+       url(/fonts/2337d84fa24916c0.woff) format('woff'),
+       url(/fonts/fdbb5c7eb2bf162e.ttf) format('truetype');
+  font-weight: 600;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Clash Display';
+  src: url(/fonts/9e73742a037f87a7.woff2) format('woff2'),
+       url(/fonts/b6341d277e873be9.woff) format('woff'),
+       url(/fonts/7af4f00e654a32ce.ttf) format('truetype');
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+

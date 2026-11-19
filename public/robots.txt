@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://daffah.my.id/sitemap-index.xml

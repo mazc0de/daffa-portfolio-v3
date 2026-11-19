@@ -1,0 +1,16 @@
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/a6ce9c016b623e48.woff2) format('woff2');
+  unicode-range: U+41, U+49, U+4f, U+61, U+65-66, U+69, U+6e, U+72, U+74-75;
+}
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/fb3a9284b424f5db.woff2) format('woff2');
+  unicode-range: U+41, U+49, U+4f, U+61, U+65-66, U+69, U+6e, U+72, U+74-75;
+}

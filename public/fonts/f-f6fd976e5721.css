@@ -1,0 +1,16 @@
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(/fonts/eb16972c8464e68f.woff2) format('woff2');
+  unicode-range: U+20, U+41, U+47, U+52-53, U+61, U+64, U+66, U+6e-70, U+73-74;
+}
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/fonts/056ff92c1f501e48.woff2) format('woff2');
+  unicode-range: U+20, U+41, U+47, U+52-53, U+61, U+64, U+66, U+6e-70, U+73-74;
+}

@@ -1,0 +1,16 @@
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/28c8bd393c375a83.woff2) format('woff2');
+  unicode-range: U+41, U+4e, U+61, U+65, U+78;
+}
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/fonts/28c8bd393c375a83.woff2) format('woff2');
+  unicode-range: U+41, U+4e, U+61, U+65, U+78;
+}

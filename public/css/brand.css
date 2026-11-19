@@ -1,0 +1,77 @@
+/* Brand overrides – loaded after the page stylesheet.
+   Replace /brand/mark.svg with your own logo mark (square, ~64×64). */
+:root { --omFace: url(/brand/mark.svg); }
+/* same specificity as the page stylesheets' `.r-logo b.r-mark`, so this later rule wins */
+.r-logo b.r-mark { background: url(/brand/mark.svg) center / contain no-repeat !important; }
+
+/* footer giant wordmark with the full name (18 characters instead of 5): sized to fit one line */
+.foot-word.foot-word--full { font-size: clamp(26px, 12.4vw, 250px); }
+.foot-word--full .sp { width: .24em; }
+/* the page stylesheet staggers only the first 8 letters; continue the wave for the rest */
+.foot-stage.reveal.in .foot-word--full span:nth-child(9){transition-delay:0.32s}
+.foot-stage.reveal.in .foot-word--full span:nth-child(10){transition-delay:0.36s}
+.foot-stage.reveal.in .foot-word--full span:nth-child(11){transition-delay:0.40s}
+.foot-stage.reveal.in .foot-word--full span:nth-child(12){transition-delay:0.44s}
+.foot-stage.reveal.in .foot-word--full span:nth-child(13){transition-delay:0.48s}
+.foot-stage.reveal.in .foot-word--full span:nth-child(14){transition-delay:0.52s}
+.foot-stage.reveal.in .foot-word--full span:nth-child(15){transition-delay:0.56s}
+.foot-stage.reveal.in .foot-word--full span:nth-child(16){transition-delay:0.60s}
+.foot-stage.reveal.in .foot-word--full span:nth-child(17){transition-delay:0.64s}
+.foot-stage.reveal.in .foot-word--full span:nth-child(18){transition-delay:0.68s}
+/* loading screen shows the full name: allow it to shrink further on small phones so it stays on one line */
+.ld-mark { font-size: clamp(26px, 8vw, 84px); white-space: nowrap; }
+
+/* ── Download CV ───────────────────────────────────────────────────────── */
+/* topbar: CV pill sits with the email pill so the nav stays centred */
+.topbar .tb-end { display: flex; align-items: center; gap: 8px; pointer-events: none; }
+.topbar .tb-end > * { pointer-events: auto; }
+.cv-pill { padding: 9px 14px; gap: 7px; font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--ink); text-decoration: none; transition: background .2s, color .2s, border-color .2s; }
+.cv-pill svg { width: 14px; height: 14px; }
+.cv-pill:hover { background: var(--brand); border-color: var(--brand); color: #fff; }
+@media (max-width: 1080px) { .topbar .tb-end { display: none; } }
+
+.cv-pill:focus-visible { outline: 2px solid var(--tool); outline-offset: 3px; }
+
+/* ── Accessibility ─────────────────────────────────────────────────────── */
+/* screen-reader-only text, available on every page (home.css has its own copy for the About bento) */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+/* skip link: hidden until focused with the keyboard, then shown above the loader and topbar */
+.skip-link { position: fixed; top: 12px; left: 12px; z-index: 10000; padding: 10px 16px; border-radius: 10px; background: var(--ink, #14202B); color: #fff; font-family: var(--mono, monospace); font-size: 13px; font-weight: 700; text-decoration: none; transform: translateY(-160%); transition: transform .2s; }
+.skip-link:focus-visible { transform: none; outline: 2px solid var(--tool, #0D99FF); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .skip-link { transition: none; } }
+
+/* hero: on wider screens the name is drawn on a canvas, so the h1 stays in the page for screen readers
+   instead of being display:none (phones still show it as the visible heading) */
+@media (min-width: 681px) {
+  #phero .ph-fallback { display: block; position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+}
+
+/* keyboard focus for controls that were not focusable before */
+.omw-dots button:focus-visible,
+.sv-toggle:focus-visible { outline: 2px solid var(--tool, #0D99FF); outline-offset: 3px; }
+
+/* visible keyboard focus for every link and button that has no focus style of its own
+   (:where keeps specificity at zero, so component-level :focus-visible rules still win) */
+:where(a, button, [tabindex]):focus-visible { outline: 2px solid var(--ink, #14202B); outline-offset: 3px; }
+.foot :where(a, button):focus-visible { outline-color: #fff; }
+
+/* in-page anchors land below the fixed topbar instead of under it */
+#work, #about, #services, #why, #main { scroll-margin-top: 96px; }
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* ── Contrast ──────────────────────────────────────────────────────────── */
+/* White text on the brand orange (#F0531C) is 3.5:1, below the 4.5:1 that WCAG asks for body-size text.
+   Buttons and small labels with white text use a deeper orange (5.0:1 on white, 4.6:1 as text on the
+   pale orange chip). The brand orange stays as is for the logo, accents and large display type. */
+:root { --brand-strong: #C93F0E; }
+.btn:not(.ghost), .ph-btn.primary, .foot-book,
+.btn:not(.ghost):hover, .ph-btn.primary:hover, .foot-book:hover { background-color: var(--brand-strong) !important; }
+.btn:not(.ghost), .ph-btn.primary, .foot-book { box-shadow: 0 12px 26px -12px var(--brand-strong) !important; }
+.r-pct { background: var(--brand-strong); }
+.omw-slide.active .omw-mt span:first-child { color: var(--brand-strong); }
+
+/* Top-left ruler logo: full name, trimmed to "DAFFA" on small phones so the ruler keeps its room
+   (the flex gap of .r-logo is the space between the two names) */
+@media (max-width: 520px) { .r-logo .r-rest { display: none; } }

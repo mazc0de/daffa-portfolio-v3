@@ -1,0 +1,16 @@
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/f33663f431d7b8c4.woff2) format('woff2');
+  unicode-range: U+41-42, U+4d, U+61, U+65, U+69, U+6c, U+6e-70, U+72-74;
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/fonts/f33663f431d7b8c4.woff2) format('woff2');
+  unicode-range: U+41-42, U+4d, U+61, U+65, U+69, U+6c, U+6e-70, U+72-74;
+}
