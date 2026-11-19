@@ -11,8 +11,8 @@ Almost all copy lives in `src/data/site.ts`. Interactive behavior lives in `publ
 - [x] Brand name "Daffa" (loader, ruler, footer wordmark, `daffa.fig`), full name Daffa Hanifisyafiq
 - [x] Top-left ruler logo shows the full name (just "DAFFA" on phones ≤520px)
 - [x] Tab icon turns into 👻 while the visitor is on another tab (`public/favicon-away.svg`)
-- [x] Logo: orange **d** mark (`public/brand/mark.svg`) + favicon (`public/favicon.svg`)
-- [x] OG image: `public/brand/og.png` 1200×630 (from `og.svg`), label shows daffah.my.id instead of daffa.fig
+- [x] Logo: **df.** mark (dark tile, white df, orange dot) in `public/brand/mark.svg` + full favicon set (svg, ico, apple-touch, android, web manifest)
+- [x] OG image: `public/brand/og.png` 1200×630 (from `og.svg`), df. mark in a selection frame, label daffah.my.id
 - [x] Role: Frontend Developer (tab title, SEO description, JSON-LD `Person`)
 - [x] Email: daffahan29@gmail.com (topbar, footer, contact form recipient)
 - [x] Socials: Instagram, LinkedIn, GitHub

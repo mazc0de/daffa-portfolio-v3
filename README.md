@@ -18,8 +18,8 @@ halaman `/work/<slug>`).
 
 | Ganti | Lokasi |
 |---|---|
-| Logo mark | `public/brand/mark.svg` (+ `public/favicon.svg`) |
-| Gambar OG | `public/brand/og.png` (1200×630, dipakai untuk preview link). Sumber desainnya `public/brand/og.svg`; render ulang ke PNG di browser bila diubah, karena font Bricolage Grotesque & Space Mono tidak terpasang di sistem |
+| Logo mark (**df.**) | `public/brand/mark.svg` (ruler, avatar, footer, WA) + set favicon di `public/`: `favicon.svg`, `favicon.ico`, `apple-touch-icon.png`, `android-chrome-192x192.png`/`-512x512.png`, `site.webmanifest` |
+| Gambar OG | `public/brand/og.png` (1200×630, dipakai untuk preview link). Sumber desainnya `public/brand/og.svg`; render ulang ke PNG bila diubah: bungkus SVG-nya dalam HTML yang memuat `/fonts/home.css` (font Space Mono tidak terpasang di sistem), sajikan hasil build lewat server lokal, lalu `"Google Chrome" --headless=new --window-size=1200,630 --virtual-time-budget=4000 --screenshot=og.png <url>` |
 | Gambar proyek | `public/images/work/<slug>.svg`, `-1/-2/-3.svg`, `-page.svg` (halaman penuh untuk tour) |
 | Video/poster layanan | `public/images/services/` → isi `video` di `services.items` |
 | Testimoni | `public/images/people/` → isi `video` agar tombol PLAY aktif |
