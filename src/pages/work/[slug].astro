@@ -15,7 +15,7 @@ const cs = p.caseStudy;
 const more = projects.filter((x) => x.slug !== p.slug).slice(0, 2);
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
-<Base title={`${p.name} case study | ${site.fullName}`} description={cs.description} fontCss={caseFonts} css={['/css/case.css']} scripts={caseScripts}>
+<Base title={`${p.name} case study | ${site.fullName}`} description={`${cs.lede} Frontend case study by ${site.fullName}.`} fontCss={caseFonts} css={['/css/case.css']} scripts={caseScripts}>
   <SubChrome active="Work" />
   <main id="main">
     <div class="cs">

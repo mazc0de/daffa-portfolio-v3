@@ -29,8 +29,6 @@ export type Project = {
     lede: string;
     facts: { k: string; v: string }[];
     live?: { label: string; url: string };
-    /** meta description halaman (deskripsi lengkap proyek) */
-    description: string;
     /** teks besar yang "terisi" saat di-scroll: cerita singkat proyek */
     statement: string;
     /** paragraf kecil di bawah statement (opsional, kosongkan '' untuk menyembunyikan) */
@@ -405,8 +403,6 @@ type ProjectInput = {
   tags: string[];
   /** ringkasan satu kalimat (kartu /work) */
   summary: string;
-  /** deskripsi lengkap (pembuka case study) */
-  desc: string;
   /** screenshot utama di /public/images/work/ */
   image: string;
   /** link live; kosongkan '' untuk proyek internal/klien yang tidak publik */
@@ -422,7 +418,7 @@ type ProjectInput = {
 };
 
 function project(p: ProjectInput): Project {
-  const { slug, name, accent, tags, summary, desc, image, link, industry, platform, year = '', story, highlights } = p;
+  const { slug, name, accent, tags, summary, image, link, industry, platform, year = '', story, highlights } = p;
   const facts = [
     { k: 'Role', v: 'Frontend development' },
     { k: 'Industry', v: industry },
@@ -435,7 +431,6 @@ function project(p: ProjectInput): Project {
     caseStudy: {
       title: name,
       lede: summary,
-      description: desc,
       facts,
       live: link ? { label: new URL(link).hostname.replace(/^www\./, ''), url: link } : undefined,
       statement: story,
@@ -455,7 +450,6 @@ export const projects: Project[] = [
     slug: 'tiketkapal', name: 'Tiket Kapal.com', accent: '#1E4E8C',
     tags: ['React.js', 'Tailwind CSS'], industry: 'Transportation', platform: 'Web',
     summary: 'Online ferry booking for routes from Bali, Tanjung Pinang and Batam.',
-    desc: 'Tiketkapal.com is a convenient online platform that helps users book ferry tickets from Bali, Tanjung Pinang, and Batam. It allows users to search schedules and make payments easily and securely.',
     image: '/images/work/tiketkapal.webp', link: 'https://tiketkapal.com/',
     story: 'Tiket Kapal is the public booking site for ferries out of Bali, Tanjung Pinang and Batam. I build and maintain its frontend at PT Mitra Kasih Perkasa: the schedule search, the booking steps and the hand-off to payment, all wired to the booking, payment and ticketing APIs.',
     highlights: [
@@ -468,7 +462,6 @@ export const projects: Project[] = [
     slug: 'kos-ibu-ami', name: 'Kos Ibu Ami Petarukan', accent: '#8A6A4F',
     tags: ['Next.js', 'Tailwind CSS', 'shadcn/ui'], industry: 'Property', platform: 'Web',
     summary: 'A simple website for a boarding house in Petarukan, with facilities, location and contact in one place.',
-    desc: 'Kos Ibu Ami Petarukan is a simple and comfortable boarding house located in Petarukan. It provides essential facilities, a strategic location, and an easy way for tenants to get information through the website.',
     image: '/images/work/kos-ibu-ami.webp', link: 'https://kosibuami.my.id/',
     story: 'A small website for a boarding house in Petarukan. Anyone looking for a room can see the facilities, real photos and the location in one place, then contact the owner directly. Built with Next.js, Tailwind CSS and shadcn/ui.',
     highlights: [
@@ -481,7 +474,6 @@ export const projects: Project[] = [
     slug: 'selfkiosk', name: 'Selfkiosk Pelabuhan', accent: '#3E8E7E',
     tags: ['React.js', 'Tailwind CSS'], industry: 'Transportation', platform: 'Kiosk',
     summary: 'Self-service kiosks at the port: browse schedules, pick a route, pay and print the ticket.',
-    desc: 'A self-service kiosk system located at the port that allows passengers to conveniently browse ferry schedules, select routes, and independently complete their ticket purchase. The kiosk is integrated with the ferry reservation system for seamless transactions and also provides instant ticket printing for passengers.',
     image: '/images/work/selfkiosk.webp', link: '',
     story: 'Self-service ticket kiosks at the port, so passengers can skip the counter queue. I built the kiosk frontend: choosing a route and schedule, entering passenger details, paying and getting the ticket printed on the spot, all connected to the ferry reservation system.',
     highlights: [
@@ -494,7 +486,6 @@ export const projects: Project[] = [
     slug: 'departure-board', name: 'Harbor Departure Board', accent: '#2A17C9',
     tags: ['React.js', 'Tailwind CSS'], industry: 'Transportation', platform: 'Digital signage',
     summary: 'A real-time departure board for ports: vessel, destination, schedule, gate and status.',
-    desc: 'A digital departure board commonly found at ports that displays essential ferry information, including vessel name, destination, schedule, gate, status, and remarks. It helps passengers stay updated and informed in real time.',
     image: '/images/work/departure-board.webp', link: '',
     story: 'The screens in a port terminal that tell passengers which ferry leaves when. I built the board’s frontend: vessel, destination, schedule, gate, status and remarks, kept up to date in real time so nobody has to touch it.',
     highlights: [
@@ -507,7 +498,6 @@ export const projects: Project[] = [
     slug: 'mini-bms', name: 'Mini BMS Lifestyle', accent: '#D99A00',
     tags: ['Next.js', 'Tailwind CSS'], industry: 'Transportation', platform: 'Mobile web (Livin’)',
     summary: 'Ferry ticket booking inside Livin’ Sukha Lifestyle, paid with Bank Mandiri.',
-    desc: 'Mini BMS Lifestyle is a ferry ticket booking application similar to Tiketkapal.com, available on the Livin Sukha Lifestyle page. It is directly integrated with Bank Mandiri payment services, enabling users to conveniently search schedules, book tickets, and complete secure transactions.',
     image: '/images/work/mini-bms.webp', link: '',
     story: 'Ferry booking inside the Livin’ by Mandiri app, under its Sukha Lifestyle section. It works like Tiket Kapal, but lives in a webview inside the banking app and pays straight through Bank Mandiri.',
     highlights: [
@@ -520,7 +510,6 @@ export const projects: Project[] = [
     slug: 'astra-visteon', name: 'Astra Visteon', accent: '#D9822B',
     tags: ['React.js', 'Tailwind CSS'], industry: 'Manufacturing', platform: 'Web app',
     summary: 'A web app for tracking continuous-improvement work through every PDCA stage.',
-    desc: 'This is a web-based application designed to streamline and manage continuous improvement initiatives using the PDCA (Plan-Do-Check-Action) methodology. It helps teams monitor every stage of the improvement cycle with clear visibility, structured workflows, and intuitive tracking tools, enabling more effective problem-solving and sustained operational excellence.',
     image: '/images/work/astra-visteon.webp', link: '',
     story: 'A web app for running continuous improvement with the PDCA cycle: Plan, Do, Check, Action. Teams log issues, follow each one through every stage and see where things stand on a dashboard.',
     highlights: [
@@ -533,7 +522,6 @@ export const projects: Project[] = [
     slug: 'spc-detailing', name: 'SPC Auto Detailing', accent: '#D62828',
     tags: ['React.js', 'Tailwind CSS'], industry: 'Automotive', platform: 'Landing page',
     summary: 'A landing page for a car detailing and ceramic coating business.',
-    desc: 'A landing page designed to showcase a vehicle detailing and coating business. It highlights the services offered, such as premium detailing, paint protection, and high-quality ceramic coating, while presenting a clean, modern layout that builds trust and captures customer interest. The page focuses on visual appeal, clear service information, and strong calls-to-action to help convert visitors into clients.',
     image: '/images/work/spc-detailing.webp', link: '',
     story: 'A landing page for a car detailing and ceramic coating business. It shows off the work with big photos, explains the services plainly and keeps the next step, the price list or a message, within reach.',
     highlights: [
