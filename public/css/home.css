@@ -550,7 +550,7 @@ body.loaded .hero .float .tape{animation:popIn .6s cubic-bezier(.2,1.4,.4,1) for
  .loader{transition:opacity .4s ease}.loader.done{transform:none;opacity:0;pointer-events:none}
  .ld-mark,.ld-sel::before,.ld-sel .h,.ld-dim,.ld-bar span{animation:none;opacity:1;clip-path:none;transform:none}.ld-bar span{width:100%}.wordmark.demo::after,.wordmark.demo .h,.wordmark.demo .dim{animation:none}.rcard{transform:none!important;position:relative;margin:0 auto 20px}.rev-scroll{height:auto}.reviews .sec-head{position:static;text-align:center;margin:0 0 18px}.foot-word span{transition:none}.foot-dot{animation:none}.df-btn svg{animation:none}.df-h2 .o{animation:none;color:#F0531C}
 }
-.av-logo{background:var(--omFace) center/64% no-repeat var(--brand)!important;box-shadow:none!important;color:transparent!important;font-size:0!important;overflow:hidden}
+.av-logo{background:var(--omFace) center/cover no-repeat #101312!important;box-shadow:none!important;color:transparent!important;font-size:0!important;overflow:hidden}
 .r-logo b.r-mark{width:20px;height:20px;border-radius:5px}
 
 /* icons: one purposeful loop each, no drifting */
@@ -719,7 +719,7 @@ body.loaded .hero .float .tape{animation:popIn .6s cubic-bezier(.2,1.4,.4,1) for
 .diff-us .diff-fmeta{color:var(--tool);border-color:var(--tool)}
 .diff-flock,.diff-favatar{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;flex:none}
 .diff-flock{background:#e6e9ec;color:var(--ink-faint)}.diff-flock svg{width:15px;height:15px}
-.diff-favatar{background:var(--omFace) center/62% no-repeat var(--brand);color:transparent;font-family:var(--display);font-weight:800;font-size:0}
+.diff-favatar{background:var(--omFace) center/cover no-repeat #101312;color:transparent;font-family:var(--display);font-weight:800;font-size:0}
 .diff-list{list-style:none;display:flex;flex-direction:column;gap:15px;margin:0;padding:0}
 .diff-list li{display:flex;align-items:flex-start;gap:12px;font-size:15px;line-height:1.42;opacity:0;transition:transform .18s ease}
 .diff-win.in .diff-list li{animation:diffFade .55s cubic-bezier(.2,.7,.2,1) forwards}
@@ -948,7 +948,7 @@ a.witem{text-decoration:none;color:inherit}
 @keyframes waBob{0%,90%,100%{transform:translateY(0)}95%{transform:translateY(-5px)}}
 .wa-float a{position:relative;display:flex;align-items:center;gap:11px;background:#fff;border:1px solid rgba(20,32,43,.08);border-radius:17px;padding:11px 17px 11px 13px;box-shadow:0 22px 46px -16px rgba(20,32,43,.5);text-decoration:none;overflow:hidden}
 .wa-float a::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--brand)}
-.wa-float .wa-av{width:40px;height:40px;border-radius:12px;background:var(--omFace) center/60% no-repeat var(--brand);position:relative;flex:none}
+.wa-float .wa-av{width:40px;height:40px;border-radius:12px;background:var(--omFace) center/cover no-repeat #101312;position:relative;flex:none}
 .wa-float .wa-dot{position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:50%;background:#0FC27B;border:2.5px solid #fff}
 .wa-float .wa-body{display:flex;flex-direction:column;gap:1px}
 .wa-float .wa-top{display:flex;align-items:center;gap:7px}
