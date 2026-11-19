@@ -61,7 +61,7 @@ export const site = {
   email: 'daffahan29@gmail.com',
   /** nomor WhatsApp format internasional tanpa + (kosongkan '' untuk menyembunyikan widget) */
   whatsapp: '6283862095217',
-  ogImage: '/brand/og.png',
+  ogImage: '/brand/og.png?v=2',
   /** CV (PDF di /public/cv/). Ganti filenya di sana bila CV diperbarui */
   cv: { href: '/cv/Daffa_Hanifisyafiq-resume.pdf', file: 'Daffa_Hanifisyafiq-resume.pdf', label: 'Download CV' },
   since: '2020',
