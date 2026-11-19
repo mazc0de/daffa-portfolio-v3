@@ -1,0 +1,55 @@
+# portfolio — Astro
+
+Desain, animasi, dan interaksi identik dengan ohhmydesign.com (layout homepage sudah dicek
+pixel-per-pixel terhadap clone di `../draft`), dengan konten placeholder yang siap diganti.
+
+```bash
+npm install
+npm run dev      # http://localhost:4321
+npm run build    # output statis di dist/
+```
+
+## Mengganti konten
+
+Hampir semua teks ada di **`src/data/site.ts`**: nama brand, email, link booking, WhatsApp,
+lokasi & zona waktu (mengatur section CTA siang/malam dan jam footer), hero, about, process,
+services, testimonials, pricing, FAQ, footer, dan daftar proyek `projects` (otomatis membuat
+halaman `/work/<slug>`).
+
+| Ganti | Lokasi |
+|---|---|
+| Logo mark | `public/brand/mark.svg` (+ `public/favicon.svg`) |
+| Gambar OG | `public/brand/og.png` (1200×630, dipakai untuk preview link). Sumber desainnya `public/brand/og.svg`; render ulang ke PNG di browser bila diubah, karena font Bricolage Grotesque & Space Mono tidak terpasang di sistem |
+| Gambar proyek | `public/images/work/<slug>.svg`, `-1/-2/-3.svg`, `-page.svg` (halaman penuh untuk tour) |
+| Video/poster layanan | `public/images/services/` → isi `video` di `services.items` |
+| Testimoni | `public/images/people/` → isi `video` agar tombol PLAY aktif |
+
+Form `/contact` tidak memakai backend: brief dirangkai jadi pesan lalu dibuka di WhatsApp
+(`wa.me` ke `whatsapp`) atau di aplikasi email pengunjung (`mailto:` ke `email`).
+
+## Struktur
+
+```
+src/
+  data/site.ts          semua konten + clientConfig (dikirim ke window.__SITE__)
+  data/assets.ts        daftar font & script per halaman
+  layouts/Base.astro    <head>, SEO, JSON-LD, urutan CSS/JS
+  components/home/      section beranda (Hero, WorkSlider, About, Process, Services, …)
+  components/shared/    SubChrome (ruler/nav sub-halaman), WorkCard
+  pages/                index, work/index, work/[slug], contact, 404
+public/
+  css/                  stylesheet asli per halaman (dilayani apa adanya, lihat catatan)
+  js/home/00–21.js      interaksi beranda, urutan sesuai aslinya
+  js/sub/, case.js, contact.js   interaksi sub-halaman
+  js/matter.min.js      physics untuk section "This button does nothing"
+  fonts/                Google Fonts + Fontshare self-hosted
+```
+
+**Catatan teknis**
+
+- CSS disajikan dari `public/` tanpa diproses Vite karena stylesheet aslinya mengandung
+  beberapa error sintaks kecil yang ditoleransi browser tapi ditolak PostCSS. Ini menjaga
+  cascade tetap 100% sama.
+- Script interaktif berupa vanilla JS tanpa build step dan membaca konten dinamis dari
+  `window.__SITE__` (diisi dari `clientConfig` di `site.ts`).
+- Semua efek kursor hanya aktif di `pointer:fine` dan menghormati `prefers-reduced-motion`.
