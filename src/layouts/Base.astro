@@ -69,8 +69,10 @@ const ogImageAlt = `${site.fullName}, ${site.tagline}`;
     <meta property="og:image:alt" content={ogImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image:alt" content={ogImageAlt} />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     {preconnect.map((href) => <link rel="preconnect" href={href} crossorigin />)}
     {fontPreload.map((href) => <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />)}
@@ -103,11 +105,14 @@ const ogImageAlt = `${site.fullName}, ${site.tagline}`;
     <script is:inline>
       // tab icon: a ghost emoji (👻) while the visitor is on another tab, the normal mark when they come back
       (function () {
-        var icon = document.querySelector('link[rel="icon"]');
-        if (!icon) return;
-        var home = icon.getAttribute('href'), away = '/favicon-away.svg';
+        // every icon link swaps (.ico and .svg), otherwise the browser can keep showing the one left alone
+        var icons = Array.prototype.slice.call(document.querySelectorAll('link[rel="icon"]'));
+        if (!icons.length) return;
+        var home = icons.map(function (l) { return l.getAttribute('href'); }), away = '/favicon-away.svg';
         new Image().src = away; // warm the cache so the swap is instant
-        document.addEventListener('visibilitychange', function () { icon.setAttribute('href', document.hidden ? away : home); });
+        document.addEventListener('visibilitychange', function () {
+          icons.forEach(function (l, k) { l.setAttribute('href', document.hidden ? away : home[k]); });
+        });
       })();
     </script>
     {vendor.map((src) => <script is:inline src={src}></script>)}
