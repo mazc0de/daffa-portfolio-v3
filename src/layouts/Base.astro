@@ -31,18 +31,40 @@ const {
   preconnect = [],
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
+// structured data: who the site is about (Person) and what the site is called (WebSite, which Google uses
+// for the site name shown above the result). Both point at each other through @id.
+const home = new URL('/', site.url).href;
+const job = site.experience.versions.find((v) => v.current);
+const school = site.experience.versions.find((v) => /universit/i.test(v.company));
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: site.fullName,
-  alternateName: site.brand,
-  jobTitle: site.tagline,
-  image: new URL(site.about.photo, site.url).href,
-  url: site.url,
-  email: site.email,
-  description: site.description,
-  sameAs: site.socials.map((s) => s.href),
-  address: { '@type': 'PostalAddress', addressLocality: site.location.city, addressCountry: 'ID' },
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${home}#website`,
+      url: home,
+      name: site.fullName,
+      alternateName: [site.brand, new URL(site.url).hostname],
+      inLanguage: 'en',
+      publisher: { '@id': `${home}#person` },
+    },
+    {
+      '@type': 'Person',
+      '@id': `${home}#person`,
+      name: site.fullName,
+      alternateName: site.brand,
+      jobTitle: site.tagline,
+      image: new URL(site.about.photo, site.url).href,
+      url: home,
+      email: site.email,
+      description: site.description,
+      sameAs: site.socials.map((s) => s.href),
+      address: { '@type': 'PostalAddress', addressLocality: site.location.city, addressCountry: 'ID' },
+      ...(job && { worksFor: { '@type': 'Organization', name: job.company } }),
+      ...(school && { alumniOf: { '@type': 'CollegeOrUniversity', name: school.company } }),
+      knowsAbout: ['Frontend development', 'React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Web accessibility', 'Web performance'],
+    },
+  ],
 };
 const ogImage = new URL(site.ogImage, site.url).href;
 // bump when the logo or icons change: browsers keep favicons in their own cache and a new URL forces a fresh copy
@@ -73,6 +95,8 @@ const ogImageAlt = `${site.fullName}, ${site.tagline}`;
     <meta name="twitter:image:alt" content={ogImageAlt} />
     <link rel="icon" href={`/favicon.ico${iconV}`} sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href={`/favicon.svg${iconV}`} />
+    <!-- Google Search wants a favicon that is a multiple of 48px; the .ico only holds 16 and 32 -->
+    <link rel="icon" type="image/png" sizes="192x192" href={`/android-chrome-192x192.png${iconV}`} />
     <link rel="apple-touch-icon" href={`/apple-touch-icon.png${iconV}`} />
     <link rel="manifest" href={`/site.webmanifest${iconV}`} />
     <link rel="sitemap" href="/sitemap-index.xml" />
