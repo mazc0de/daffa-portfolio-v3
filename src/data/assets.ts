@@ -1,3 +1,23 @@
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+/**
+ * Adds ?v=<content hash> to a file served from /public (CSS, JS). The URL changes whenever the file does,
+ * so vercel.json can let browsers cache these for a year: a deploy that edits a file gives it a new URL.
+ * Runs at build time only (page frontmatter). External URLs are returned unchanged.
+ */
+const hashes = new Map<string, string>();
+export function versioned(src: string) {
+  if (!src.startsWith('/')) return src;
+  let v = hashes.get(src);
+  if (!v) {
+    v = createHash('sha1').update(readFileSync(join(process.cwd(), 'public', src))).digest('hex').slice(0, 10);
+    hashes.set(src, v);
+  }
+  return `${src}?v=${v}`;
+}
+
 // Self-hosted Google Fonts / Fontshare stylesheets (files live in /public/fonts).
 // Bricolage Grotesque (display) · Hanken Grotesk (body) · Space Mono (mono) · Shantell Sans (hand)
 // Fraunces (serif accents) · Anton (particle hero) · Archivo · Outfit · Clash Display

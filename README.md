@@ -22,7 +22,7 @@ Role "Solo, full stack") dan boleh diberi `repo` (link GitHub di case study); ur
 | Logo mark (**df.**) | `public/brand/mark.svg` (ruler, avatar, footer, WA) + set favicon di `public/`: `favicon.svg`, `favicon.ico`, `apple-touch-icon.png`, `android-chrome-192x192.png`/`-512x512.png`, `site.webmanifest` |
 | Versi ikon (anti-cache) | Saat logo/ikon/OG diganti, naikkan `?v=2` → `?v=3` di 4 tempat: `iconV` di `src/layouts/Base.astro`, `public/site.webmanifest`, `public/css/brand.css`, dan `ogImage` di `src/data/site.ts`. Browser (dan WhatsApp/Facebook) lalu mengambil file baru, bukan dari cache |
 | Gambar OG | `public/brand/og.png` (1200×630, dipakai untuk preview link). Sumber desainnya `public/brand/og.svg`; render ulang ke PNG bila diubah: bungkus SVG-nya dalam HTML yang memuat `/fonts/home.css` (font Space Mono tidak terpasang di sistem), sajikan hasil build lewat server lokal, lalu `"Google Chrome" --headless=new --window-size=1200,630 --virtual-time-budget=4000 --screenshot=og.png <url>` |
-| Gambar proyek | `public/images/work/<slug>.svg`, `-1/-2/-3.svg`, `-page.svg` (halaman penuh untuk tour) |
+| Gambar proyek | `public/images/work/<slug>.webp` (1600×900), lalu jalankan `sh scripts/image-variants.sh`: membuat `-640`/`-1024` untuk srcset dan `public/images/og/<slug>.jpg` (1200×630, preview link halaman `/work/<slug>`) |
 | Video/poster layanan | `public/images/services/` → isi `video` di `services.items` |
 | CV | `public/cv/*.pdf` (path di `site.cv`). Tombol CV kanan atas membuka preview PDF (`src/components/shared/CvPreview.astro`) dengan tombol Download / Open PDF; cukup ganti file PDF-nya, preview ikut berubah |
 | Testimoni | `public/images/people/` → isi `video` agar tombol PLAY aktif |
@@ -56,3 +56,7 @@ public/
 - Script interaktif berupa vanilla JS tanpa build step dan membaca konten dinamis dari
   `window.__SITE__` (diisi dari `clientConfig` di `site.ts`).
 - Semua efek kursor hanya aktif di `pointer:fine` dan menghormati `prefers-reduced-motion`.
+- Cache (`vercel.json`): font disimpan browser 1 tahun (nama filenya sudah unik). CSS/JS juga 1 tahun karena
+  `Base.astro` menambahkan `?v=<hash isi file>` (`versioned()` di `src/data/assets.ts`), jadi URL-nya berganti
+  setiap file diubah. Gambar di `images/` dan `brand/` 1 hari, lalu diperbarui di latar belakang; mengganti
+  gambar dengan nama yang sama butuh sampai sehari untuk terlihat oleh pengunjung lama.

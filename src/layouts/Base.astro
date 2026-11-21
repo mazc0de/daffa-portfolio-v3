@@ -1,5 +1,6 @@
 ---
 import { site, clientConfig } from '../data/site';
+import { versioned } from '../data/assets';
 
 interface Props {
   title?: string;
@@ -17,6 +18,8 @@ interface Props {
   fontPreload?: string[];
   /** third-party origins the page calls early */
   preconnect?: string[];
+  /** link-preview image for this page (1200×630); defaults to the site-wide site.ogImage */
+  image?: { src: string; alt: string };
 }
 
 const {
@@ -29,6 +32,7 @@ const {
   noindex = false,
   fontPreload = [],
   preconnect = [],
+  image,
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
 // structured data: who the site is about (Person) and what the site is called (WebSite, which Google uses
@@ -66,10 +70,11 @@ const jsonLd = {
     },
   ],
 };
-const ogImage = new URL(site.ogImage, site.url).href;
+const ogImage = new URL(image?.src ?? site.ogImage, site.url).href;
+const ogImageType = /\.jpe?g(\?|$)/.test(ogImage) ? 'image/jpeg' : 'image/png';
 // bump when the logo or icons change: browsers keep favicons in their own cache and a new URL forces a fresh copy
 const iconV = '?v=2';
-const ogImageAlt = `${site.fullName}, ${site.tagline}`;
+const ogImageAlt = image?.alt ?? `${site.fullName}, ${site.tagline}`;
 ---
 <!doctype html>
 <html lang="en">
@@ -87,7 +92,7 @@ const ogImageAlt = `${site.fullName}, ${site.tagline}`;
     <meta property="og:description" content={description} />
     {!noindex && <meta property="og:url" content={canonical} />}
     <meta property="og:image" content={ogImage} />
-    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:type" content={ogImageType} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={ogImageAlt} />
@@ -102,9 +107,9 @@ const ogImageAlt = `${site.fullName}, ${site.tagline}`;
     <link rel="sitemap" href="/sitemap-index.xml" />
     {preconnect.map((href) => <link rel="preconnect" href={href} crossorigin />)}
     {fontPreload.map((href) => <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />)}
-    {fontCss.map((href) => <link rel="stylesheet" href={href} />)}
-    {css.map((href) => <link rel="stylesheet" href={href} />)}
-    <link rel="stylesheet" href="/css/brand.css" />
+    {fontCss.map((href) => <link rel="stylesheet" href={versioned(href)} />)}
+    {css.map((href) => <link rel="stylesheet" href={versioned(href)} />)}
+    <link rel="stylesheet" href={versioned('/css/brand.css')} />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <script is:inline>
       // a refresh always starts at the top (the browser would otherwise restore the old scroll
@@ -141,7 +146,7 @@ const ogImageAlt = `${site.fullName}, ${site.tagline}`;
         });
       })();
     </script>
-    {vendor.map((src) => <script is:inline src={src}></script>)}
-    {scripts.map((src) => <script is:inline src={src}></script>)}
+    {vendor.map((src) => <script is:inline src={versioned(src)}></script>)}
+    {scripts.map((src) => <script is:inline src={versioned(src)}></script>)}
   </body>
 </html>

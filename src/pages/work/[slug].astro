@@ -15,7 +15,7 @@ const cs = p.caseStudy;
 const more = projects.filter((x) => x.slug !== p.slug).slice(0, 2);
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
-<Base title={`${p.name} case study | ${site.fullName}`} description={`${cs.lede} ${p.kind === 'personal' ? 'Personal project' : 'Frontend case study'} by ${site.fullName}.`} fontCss={caseFonts} css={['/css/case.css']} scripts={caseScripts}>
+<Base title={`${p.name} case study | ${site.fullName}`} description={`${cs.lede} ${p.kind === 'personal' ? 'Personal project' : 'Frontend case study'} by ${site.fullName}.`} fontCss={caseFonts} css={['/css/case.css']} scripts={caseScripts} image={{ src: `/images/og/${p.slug}.jpg`, alt: `${p.name}, ${p.platform.toLowerCase()} screenshot` }}>
   <SubChrome active="Work" />
   <main id="main">
     <div class="cs">
