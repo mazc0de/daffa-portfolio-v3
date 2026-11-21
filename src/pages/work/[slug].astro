@@ -15,7 +15,7 @@ const cs = p.caseStudy;
 const more = projects.filter((x) => x.slug !== p.slug).slice(0, 2);
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
-<Base title={`${p.name} case study | ${site.fullName}`} description={`${cs.lede} Frontend case study by ${site.fullName}.`} fontCss={caseFonts} css={['/css/case.css']} scripts={caseScripts}>
+<Base title={`${p.name} case study | ${site.fullName}`} description={`${cs.lede} ${p.kind === 'personal' ? 'Personal project' : 'Frontend case study'} by ${site.fullName}.`} fontCss={caseFonts} css={['/css/case.css']} scripts={caseScripts}>
   <SubChrome active="Work" />
   <main id="main">
     <div class="cs">
@@ -25,6 +25,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <div class="cs-meta cs-rv">
           {cs.facts.map((f) => <div><span class="l">{f.k}</span><span class="v">{f.v}</span></div>)}
           {cs.live && <a class="go" href={cs.live.url} target="_blank" rel="noopener"><span class="l">Live site</span><span class="v">{cs.live.label} <i><Fragment set:html={i.arrowUR} /></i></span></a>}
+          {cs.code && <a class="go" href={cs.code.url} target="_blank" rel="noopener"><span class="l">Source code</span><span class="v">{cs.code.label} <i><Fragment set:html={i.arrowUR} /></i></span></a>}
         </div>
       </section>
       <div class="cs-cover" id="csCover"><img src={p.image} srcset={srcset(p.image, [640, 1024], 1600)} sizes="(max-width: 620px) max(100vw, 108vh), max(100vw, min(177vh, 1690px))" alt={`${p.name}, ${p.platform.toLowerCase()} screenshot`} width="1600" height="900" fetchpriority="high"></div>
@@ -86,7 +87,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
       <section class="cs-w cs-more">
         <h2 class="cs-h2c cs-rv">More work</h2>
-        <p class="cs-p cs-sub cs-rv">Two more projects I built the frontend for.</p>
+        <p class="cs-p cs-sub cs-rv">Two more things I’ve built.</p>
         <div class="wk-grid cs-rv">{more.map((x) => <WorkCard p={x} />)}</div>
         <div class="cs-allw cs-rv"><a class="cs-mb" href="/work">See all work →</a></div>
       </section>

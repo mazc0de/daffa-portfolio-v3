@@ -1513,3 +1513,8 @@ main .wrap{max-width:1400px !important;margin:0 auto !important;padding:0 clamp(
 
 /* project screenshots are 16:9: match the card so nothing gets cropped at the sides */
 .wk-media{aspect-ratio:16/9}
+
+/* card badges: LIVE / platform, plus "Personal" for my own projects, side by side in the top-left corner */
+.wk-badges{position:absolute;top:14px;left:14px;z-index:3;display:flex;flex-wrap:wrap;gap:6px;max-width:calc(100% - 80px)}
+.wk-badges .wk-live{position:static;text-transform:uppercase}
+.wk-live.wk-own{background:rgba(240,83,28,.82);border-color:rgba(255,255,255,.32)}

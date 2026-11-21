@@ -9,6 +9,8 @@ import { workFonts, workScripts } from '../../data/assets';
 const words = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
 const pub = projects.filter((p) => p.link).length;
 const pubLine = `${words[pub] ?? pub} ${pub === 1 ? 'is' : 'are'} public; the rest run inside client apps, kiosks and offices.`;
+const own = projects.filter((p) => p.kind === 'personal').length;
+const ownLine = own ? `${words[own] ?? own} ${own === 1 ? 'is a project' : 'are projects'} of my own, built end to end and marked Personal.` : '';
 ---
 <Base title={`Work | ${site.fullName}`} description={`Selected projects by ${site.fullName}: web apps, dashboards, landing pages and kiosk interfaces built with React, Next.js and Tailwind CSS.`} fontCss={workFonts} css={['/css/work.css']} scripts={workScripts}>
   <SubChrome active="Work" />
@@ -17,7 +19,7 @@ const pubLine = `${words[pub] ?? pub} ${pub === 1 ? 'is' : 'are'} public; the re
       <span class="pf-kick scribble" role="img" aria-label="selected work"><Fragment set:html={i.scribbleWork} /></span>
       <h1 class="pf-h1">Work I’ve <span class="o">shipped</span></h1>
       <div class="pf-leadrow">
-        <p class="pf-sub">Ticketing for ports, kiosks, dashboards and a few websites. I built the frontend on every one, mostly with React, Next.js and Tailwind CSS. {pubLine}</p>
+        <p class="pf-sub">Ticketing for ports, kiosks, dashboards and a few websites. I built the frontend on every one, mostly with React, Next.js and Tailwind CSS. {ownLine} {pubLine}</p>
       </div>
     </div></section>
     <section><div class="wrap">

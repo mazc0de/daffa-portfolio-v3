@@ -23,12 +23,16 @@ export type Project = {
   link: string;
   /** tempat proyek berjalan: Web, Kiosk, Web app, dst. */
   platform: string;
+  /** 'client' = dikerjakan untuk kantor/klien; 'personal' = proyek mandiri (kartu diberi badge "Personal") */
+  kind: 'client' | 'personal';
   /** isi halaman /work/[slug] (struktur sama dengan template case study asli) */
   caseStudy: {
     title: string;
     lede: string;
     facts: { k: string; v: string }[];
     live?: { label: string; url: string };
+    /** repo publik (GitHub), tampil di samping "Live site" */
+    code?: { label: string; url: string };
     /** teks besar yang "terisi" saat di-scroll: cerita singkat proyek */
     statement: string;
     /** paragraf kecil di bawah statement (opsional, kosongkan '' untuk menyembunyikan) */
@@ -391,8 +395,9 @@ export const site = {
 };
 
 // ── Portfolio / case studies ────────────────────────────────────────────────
-// Data proyek diambil dari portofolio lama (daffa-portfolio-v2/src/data/projects.json).
-// Isi halaman case study (/work/[slug]) masih template: dikerjakan saat halaman itu diubah.
+// Proyek kantor/klien diambil dari portofolio lama (daffa-portfolio-v2/src/data/projects.json).
+// Proyek mandiri ditandai kind: 'personal' (badge "Personal" di kartu, Role "Solo, full stack", link GitHub).
+// Urutan = urutan tampil di slider beranda & /work: dicampur, yang paling kuat di depan.
 
 type ProjectInput = {
   slug: string;
@@ -415,30 +420,36 @@ type ProjectInput = {
   story: string;
   /** 3–4 sorotan "What I worked on" di case study */
   highlights: { title: string; body: string }[];
+  /** 'personal' untuk proyek mandiri; default 'client' */
+  kind?: 'client' | 'personal';
+  /** link repo publik (GitHub); kosongkan bila privat */
+  repo?: string;
 };
 
 function project(p: ProjectInput): Project {
-  const { slug, name, accent, tags, summary, image, link, industry, platform, year = '', story, highlights } = p;
+  const { slug, name, accent, tags, summary, image, link, industry, platform, year = '', story, highlights, kind = 'client', repo = '' } = p;
+  const personal = kind === 'personal';
   const facts = [
-    { k: 'Role', v: 'Frontend development' },
+    { k: 'Role', v: personal ? 'Solo, full stack' : 'Frontend development' },
     { k: 'Industry', v: industry },
     { k: 'Platform', v: platform },
     { k: 'Stack', v: tags.join(', ') },
   ];
   if (year) facts.push({ k: 'Year', v: year });
   return {
-    slug, name, accent, tags, year, summary, image, link, platform,
+    slug, name, accent, tags, year, summary, image, link, platform, kind,
     caseStudy: {
       title: name,
       lede: summary,
       facts,
       live: link ? { label: new URL(link).hostname.replace(/^www\./, ''), url: link } : undefined,
+      code: repo ? { label: 'GitHub', url: repo } : undefined,
       statement: story,
       under: '',
       // look / tour / strip stay empty until there are real assets for them (palette, full-page shot, more screenshots)
       process: {
-        heading: 'What I worked on.',
-        body: 'The parts of the frontend I owned.',
+        heading: personal ? 'What I built.' : 'What I worked on.',
+        body: personal ? 'My own project, from the idea to the database.' : 'The parts of the frontend I owned.',
         nodes: highlights,
       },
     },
@@ -459,15 +470,16 @@ export const projects: Project[] = [
     ],
   }),
   project({
-    slug: 'kos-ibu-ami', name: 'Kos Ibu Ami Petarukan', accent: '#8A6A4F',
-    tags: ['Next.js', 'Tailwind CSS', 'shadcn/ui'], industry: 'Property', platform: 'Web',
-    summary: 'A simple website for a boarding house in Petarukan, with facilities, location and contact in one place.',
-    image: '/images/work/kos-ibu-ami.webp', link: 'https://kosibuami.my.id/',
-    story: 'A small website for a boarding house in Petarukan. Anyone looking for a room can see the facilities, real photos and the location in one place, then contact the owner directly. Built with Next.js, Tailwind CSS and shadcn/ui.',
+    slug: 'cawang', name: 'Cawang', accent: '#2F6B34', kind: 'personal',
+    tags: ['React', 'TypeScript', 'Supabase'], industry: 'Personal finance', platform: 'Web app (PWA)',
+    summary: 'A money tracker that counts the month from payday, not from the 1st.',
+    image: '/images/work/cawang.webp', link: 'https://www.cawang.web.id/', repo: 'https://github.com/mazc0de/cawang-v3',
+    story: 'Cawang, short for Catat Keuangan, is a money tracker for people whose month starts on payday. It shows what is still safe to spend until the next one, sets money aside for bills with Safe-Pay and turns a purchase into a record in two taps. I designed and built it alone, from the Supabase schema to the landing page.',
     highlights: [
-      { title: 'The facts up front', body: 'Room size, private bathroom, shared kitchen, parking and free electricity: what tenants ask first.' },
-      { title: 'Real photos', body: 'Pictures of the actual rooms and building, not stock images.' },
-      { title: 'One tap to ask', body: 'A contact button that goes straight to the owner.' },
+      { title: 'Safe to spend', body: 'The available balance leaves out money locked for upcoming bills, so the number on screen is what you can really use.' },
+      { title: 'Payday cycles', body: 'Budgets and reports run from one payday to the next, not by calendar month.' },
+      { title: 'Fast entry', body: 'Amounts take sums like 25000+12500, and bulk entry takes rows pasted straight from Excel.' },
+      { title: 'Two languages, offline reads', body: 'English and Indonesian, dark mode, and an installable PWA that still shows your data offline.' },
     ],
   }),
   project({
@@ -483,6 +495,19 @@ export const projects: Project[] = [
     ],
   }),
   project({
+    slug: 'kashiru', name: 'Kashiru', accent: '#C2410C', kind: 'personal',
+    tags: ['React', 'Supabase', 'PWA'], industry: 'Automotive retail', platform: 'Web app (PWA)',
+    summary: 'A point-of-sale and stock app for a small motorcycle and car workshop.',
+    image: '/images/work/kashiru.webp', link: 'https://kashiru-workshop.vercel.app/', repo: 'https://github.com/mazc0de/kashiru-v2',
+    story: 'Kashiru runs the counter of a small workshop that also sells parts: parts and service sales, stock, incoming goods and stock takes, with reports and a change log. It runs on a Windows laptop with a thermal receipt printer and a barcode scanner, and keeps writing receipts when the internet drops.',
+    highlights: [
+      { title: 'Works offline', body: 'The cashier keeps making receipts without internet; they are sent once the connection is back.' },
+      { title: 'Real hardware', body: 'Barcode scanning, plus receipts and barcode labels printed on a 58 or 80 mm thermal printer.' },
+      { title: 'Stock you can trust', body: 'Stock cards, low-stock alerts, incoming goods and full or per-category stock takes.' },
+      { title: 'Reports and history', body: 'Sales, mechanic and stock reports to Excel and PDF, and a change log nobody can edit.' },
+    ],
+  }),
+  project({
     slug: 'departure-board', name: 'Harbor Departure Board', accent: '#2A17C9',
     tags: ['React.js', 'Tailwind CSS'], industry: 'Transportation', platform: 'Digital signage',
     summary: 'A real-time departure board for ports: vessel, destination, schedule, gate and status.',
@@ -492,6 +517,44 @@ export const projects: Project[] = [
       { title: 'Readable from afar', body: 'Large type and color-coded statuses like Boarding and Scheduled.' },
       { title: 'Always current', body: 'Departures update in real time, with the date and a live clock on screen.' },
       { title: 'Every detail in one row', body: 'Vessel, destination, time, gate, status and remarks, side by side.' },
+    ],
+  }),
+  project({
+    slug: 'prologue', name: 'Prologue', accent: '#1F7A3D', kind: 'personal',
+    tags: ['React', 'TypeScript', 'Supabase'], industry: 'Developer tools', platform: 'Web app',
+    summary: 'A project log for developers: repository, environments, releases and a task board.',
+    image: '/images/work/prologue.webp', link: 'https://prologue-app.vercel.app/', repo: 'https://github.com/mazc0de/prologue-app',
+    story: 'Prologue, short for Project Log Gue, keeps every project in one place: where the code lives, where it runs, which version is out on each environment and what work is left. Teammates join a project by invitation and move tasks on a shared board that updates in real time.',
+    highlights: [
+      { title: 'Versions per environment', body: 'Production, staging and development, each with its branch and the release that is out.' },
+      { title: 'A live board', body: 'Drag-and-drop tasks with labels, synced in real time for everyone on the project.' },
+      { title: 'Rules in the database', body: 'Who can see and change what is enforced with row-level security in Postgres, not only in the UI.' },
+      { title: 'Paper and ink', body: 'A calm e-ink look: monochrome, hairlines, mono numbers, in light and dark paper.' },
+    ],
+  }),
+  project({
+    slug: 'astra-visteon', name: 'Astra Visteon', accent: '#D9822B',
+    tags: ['React.js', 'Tailwind CSS'], industry: 'Manufacturing', platform: 'Web app',
+    summary: 'A web app for tracking continuous-improvement work through every PDCA stage.',
+    image: '/images/work/astra-visteon.webp', link: '',
+    story: 'A web app for running continuous improvement with the PDCA cycle: Plan, Do, Check, Action. Teams log issues, follow each one through every stage and see where things stand on a dashboard.',
+    highlights: [
+      { title: 'Dashboard first', body: 'Total issues, issue status, overdue items and PDCA performance at a glance.' },
+      { title: 'Every stage tracked', body: 'Each improvement moves through Plan, Do, Check and Action, with its progress visible.' },
+      { title: 'Any time frame', body: 'Daily, weekly and monthly views of issues and claims.' },
+    ],
+  }),
+  project({
+    slug: 'kingslock', name: 'Kingslock', accent: '#16A34A', kind: 'personal',
+    tags: ['React', 'Supabase', 'WebCrypto'], industry: 'Security', platform: 'Web app',
+    summary: 'A zero-knowledge password manager: everything is encrypted in the browser.',
+    image: '/images/work/kingslock.webp', link: 'https://kingslock.vercel.app/', repo: 'https://github.com/mazc0de/kingslock',
+    story: 'Kingslock is a password manager for one person, self-hosted on Supabase. Every name, login, password and note is encrypted in the browser before it leaves, so the server only ever stores ciphertext. Signing in takes a master password and a 2FA code, and every sensitive action asks for the code again.',
+    highlights: [
+      { title: 'Zero-knowledge', body: 'Argon2id, HKDF and AES-GCM in the browser; the master password never leaves the device.' },
+      { title: 'Enforced by the database', body: 'The 2FA re-check before viewing, editing or exporting is enforced in Postgres, not just in the UI.' },
+      { title: 'Careful by default', body: 'Revealed passwords hide again and the clipboard clears after 30 seconds; the vault locks when idle.' },
+      { title: 'Nothing left behind', body: 'No browser storage, no third-party scripts, and an activity log that can only grow.' },
     ],
   }),
   project({
@@ -507,15 +570,15 @@ export const projects: Project[] = [
     ],
   }),
   project({
-    slug: 'astra-visteon', name: 'Astra Visteon', accent: '#D9822B',
-    tags: ['React.js', 'Tailwind CSS'], industry: 'Manufacturing', platform: 'Web app',
-    summary: 'A web app for tracking continuous-improvement work through every PDCA stage.',
-    image: '/images/work/astra-visteon.webp', link: '',
-    story: 'A web app for running continuous improvement with the PDCA cycle: Plan, Do, Check, Action. Teams log issues, follow each one through every stage and see where things stand on a dashboard.',
+    slug: 'kos-ibu-ami', name: 'Kos Ibu Ami Petarukan', accent: '#8A6A4F',
+    tags: ['Next.js', 'Tailwind CSS', 'shadcn/ui'], industry: 'Property', platform: 'Web',
+    summary: 'A simple website for a boarding house in Petarukan, with facilities, location and contact in one place.',
+    image: '/images/work/kos-ibu-ami.webp', link: 'https://kosibuami.my.id/',
+    story: 'A small website for a boarding house in Petarukan. Anyone looking for a room can see the facilities, real photos and the location in one place, then contact the owner directly. Built with Next.js, Tailwind CSS and shadcn/ui.',
     highlights: [
-      { title: 'Dashboard first', body: 'Total issues, issue status, overdue items and PDCA performance at a glance.' },
-      { title: 'Every stage tracked', body: 'Each improvement moves through Plan, Do, Check and Action, with its progress visible.' },
-      { title: 'Any time frame', body: 'Daily, weekly and monthly views of issues and claims.' },
+      { title: 'The facts up front', body: 'Room size, private bathroom, shared kitchen, parking and free electricity: what tenants ask first.' },
+      { title: 'Real photos', body: 'Pictures of the actual rooms and building, not stock images.' },
+      { title: 'One tap to ask', body: 'A contact button that goes straight to the owner.' },
     ],
   }),
   project({
