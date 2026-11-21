@@ -1709,3 +1709,8 @@ body{background:#FAFAF8 radial-gradient(circle,rgba(20,32,43,.07) 1px,transparen
 
 /* process timeline: as many columns as there are steps (3 or 4) on wide screens */
 @media (min-width:981px){ .cs-line{grid-template-columns:repeat(var(--n,4),1fr)} }
+
+/* card badges: LIVE / platform, plus "Personal" for my own projects, side by side in the top-left corner */
+.wk-badges{position:absolute;top:14px;left:14px;z-index:3;display:flex;flex-wrap:wrap;gap:6px;max-width:calc(100% - 80px)}
+.wk-badges .wk-live{position:static;text-transform:uppercase}
+.wk-live.wk-own{background:rgba(240,83,28,.82);border-color:rgba(255,255,255,.32)}

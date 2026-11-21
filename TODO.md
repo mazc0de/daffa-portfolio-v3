@@ -70,6 +70,9 @@ Work through it one section at a time, top to bottom. Each section's copy lives 
 - [x] Intro copy: "Work I’ve shipped", frontend on every one, the public count comes from the data; bottom button "Talk with me"
 - [x] LIVE badge only for projects with a public link; the rest show their platform (Kiosk, Web app…). Cards are 16:9 like the screenshots
 - [x] Filters: none on the page (the template script stays dormant); 7 projects is short enough
+- [x] Personal projects mixed into the grid (decided: mixed, not a separate section): Cawang, Kashiru, Prologue, Kingslock with `kind: 'personal'` → "Personal" badge, Role "Solo, full stack", GitHub link on the case study
+  - [x] Kashiru and Kingslock images: screenshots of their new landing pages (1600×900)
+  - [ ] Prologue image is its OG image padded to 16:9; swap for an in-app board/dashboard shot when there is one
 
 ## Page 3: Case study (`/work/[slug]`, `src/pages/work/[slug].astro`)
 
