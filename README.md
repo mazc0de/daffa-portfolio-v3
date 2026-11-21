@@ -14,7 +14,8 @@ npm run build    # output statis di dist/
 Hampir semua teks ada di **`src/data/site.ts`**: nama brand, email, link booking, WhatsApp,
 lokasi & zona waktu (mengatur section CTA siang/malam dan jam footer), hero, about, process,
 services, testimonials, pricing, FAQ, footer, dan daftar proyek `projects` (otomatis membuat
-halaman `/work/<slug>`).
+halaman `/work/<slug>`). Proyek mandiri diberi `kind: 'personal'` (badge "Personal" di kartu,
+Role "Solo, full stack") dan boleh diberi `repo` (link GitHub di case study); urutan array = urutan tampil.
 
 | Ganti | Lokasi |
 |---|---|
