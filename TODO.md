@@ -102,4 +102,9 @@ Work through it one section at a time, top to bottom. Each section's copy lives 
 
 - [x] Home 92–95 / a11y 97 / best practices 100 / SEO 100; Work, case study and Contact a11y 100
 - [x] Fixed: contrast on the Contact and Work buttons and small gray labels, `role="img"` on the handwritten scribbles, srcset on Work cards and case study covers
+- [x] Online (Vercel) 2026-11-21: Home 98, Work / case study / Contact 100; SEO 100 everywhere
+- [x] Cache headers in `vercel.json` (fonts and versioned CSS/JS for a year, images a day); before this every asset was `max-age=0`
+- [x] What I build posters use the 1024px copies (home images 358 → 282 KB)
+- [x] Each case study has its own link-preview image (`public/images/og/<slug>.jpg`)
+- [ ] Later: trim unused template CSS in `work.css` / `case.css` (render-blocking, ~150–300 ms), JSON-LD for case studies (BreadcrumbList, CreativeWork), sharper case study titles
 - [ ] Two decorative bits still flag contrast on Home: the blue slug label on slider cards and the faint big number in What I build (left as designed)
