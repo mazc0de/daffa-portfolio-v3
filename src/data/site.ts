@@ -570,15 +570,16 @@ export const projects: Project[] = [
     ],
   }),
   project({
-    slug: 'kos-ibu-ami', name: 'Kos Ibu Ami Petarukan', accent: '#8A6A4F',
-    tags: ['Next.js', 'Tailwind CSS', 'shadcn/ui'], industry: 'Property', platform: 'Web',
-    summary: 'A simple website for a boarding house in Petarukan, with facilities, location and contact in one place.',
+    slug: 'kos-ibu-ami', name: 'Kos Ibu Ami Petarukan', accent: '#C2344F',
+    tags: ['Astro', 'Tailwind CSS'], industry: 'Property', platform: 'Web',
+    summary: 'A website for a women’s and couples’ boarding house in Petarukan: rooms, rules, location and a WhatsApp chat away.',
     image: '/images/work/kos-ibu-ami.webp', link: 'https://kosibuami.my.id/',
-    story: 'A small website for a boarding house in Petarukan. Anyone looking for a room can see the facilities, real photos and the location in one place, then contact the owner directly. Built with Next.js, Tailwind CSS and shadcn/ui.',
+    story: 'A one-page website for a boarding house in Petarukan, for women and married couples. Anyone looking for a room sees what matters first, real photos and how close it is to the station and the factories nearby, then asks about a free room on WhatsApp. I rebuilt it from Next.js as a static Astro site.',
     highlights: [
-      { title: 'The facts up front', body: 'Room size, private bathroom, shared kitchen, parking and free electricity: what tenants ask first.' },
-      { title: 'Real photos', body: 'Pictures of the actual rooms and building, not stock images.' },
-      { title: 'One tap to ask', body: 'A contact button that goes straight to the owner.' },
+      { title: 'The facts up front', body: 'A 5×3 m room, private bathroom, free electricity and no deposit, all in the first screen.' },
+      { title: 'One switch for availability', body: 'A single value updates the “room available” badge, every WhatsApp button and the message it sends.' },
+      { title: 'Ask or visit', body: 'Buttons that open WhatsApp with the message already written, including a form to book a visit.' },
+      { title: 'Easy to find', body: 'A map that loads only when asked, plus LodgingBusiness and FAQ structured data for search.' },
     ],
   }),
   project({
