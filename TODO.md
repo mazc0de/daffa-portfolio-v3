@@ -93,6 +93,14 @@ Work through it one section at a time, top to bottom. Each section's copy lives 
 
 ---
 
+## Dark mode (trial, branch `feat/dark-mode`)
+
+- [x] Night version of every page: night sky with stars, dimmed clouds, dark frames, light text; brand orange unchanged
+- [x] Toggle (sun / moon) at the end of the nav pill, shown at every width; the choice is saved, otherwise it follows the system setting; set before the first paint (no white flash); circular reveal where view transitions exist
+- [x] `public/css/<page>-dark.css` are **generated**: after editing any stylesheet in `public/css`, run `node scripts/build-dark-css.mjs`. Hand-written fixes go in `scripts/dark/shared.css` (or `scripts/dark/<page>.css`), never in the generated files
+- [x] Canvases follow the theme: ruler ticks (`00.js`, `sub/01.js`) and the ink particles of the hero name (`06.js`)
+- [ ] Decide: keep or roll back
+
 ## Saved for later
 
 - `handoff/sections-about-experience.md`: "Nice to meet you" + "How I got here" sections, both built now (on branch `docs/handoff-about-sections`)

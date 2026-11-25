@@ -1,0 +1,6 @@
+/* Contact: the light page fades from white at the top to sky blue at the bottom (with !important);
+   at night it runs from the dark top into a deep blue horizon instead */
+:root[data-theme="dark"] body {
+  background: linear-gradient(180deg, #08111D 0%, #0A1522 22%, #0E1D31 48%, #122846 76%, #173356 100%) !important;
+  background-attachment: fixed !important;
+}

@@ -1,6 +1,8 @@
 (function(){
  var cv=document.getElementById('phPc');if(!cv)return;var ctx=cv.getContext('2d');
  var W=0,H=0,dpr=1,particles=[],mouse={x:-9999,y:-9999},fine=matchMedia('(pointer:fine)').matches;
+ /* the ink particles follow the theme (light ink on the night sky) */
+ var ink='#14202B';function setInk(){ink=document.documentElement.getAttribute('data-theme')==='dark'?'#E4EBF1':'#14202B';}setInk();
  var cols=['#F0531C','#F0531C','#F0531C','#14202B','#0D99FF'],PSIZE=2.9;
  /* perf: the loop only runs while the hero is on screen, the tab is visible and the particles are still moving */
  var raf=0,started=false,onScreen=true,settled=false;
@@ -29,7 +31,7 @@
    if(fine){var dx=p.x-mouse.x,dy=p.y-mouse.y,d2=dx*dx+dy*dy;if(d2<R*R){var d=Math.sqrt(d2)||1,f=(R-d)/R*4.5;ax+=dx/d*f;ay+=dy/d*f;}}
    p.vx=(p.vx+ax)*0.86;p.vy=(p.vy+ay)*0.86;p.x+=p.vx;p.y+=p.vy;
    var v=(p.vx<0?-p.vx:p.vx)+(p.vy<0?-p.vy:p.vy),a=(ax<0?-ax:ax)+(ay<0?-ay:ay);if(v>maxV)maxV=v;if(a>maxA)maxA=a;
-   if(p.c!==fill){fill=p.c;ctx.fillStyle=fill;}
+   if(p.c!==fill){fill=p.c;ctx.fillStyle=fill==='#14202B'?ink:fill;}
    ctx.fillRect(p.x,p.y,PSIZE,PSIZE);
   }
   /* at rest (no net force, no velocity): the last frame stays on the canvas, stop until something moves */
@@ -38,6 +40,7 @@
  }
  function kick(){if(!raf&&started&&onScreen&&!settled&&!document.hidden)raf=requestAnimationFrame(frame);}
  function wake(){settled=false;kick();}
+ window.addEventListener('themechange',function(){setInk();wake();});
  function init(){size();build();wake();}
  /* hero Design ⇄ Code toggle: blow the name apart, or pull it back together from random spots */
  window.__phParticles={
