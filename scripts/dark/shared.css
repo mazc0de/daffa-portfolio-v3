@@ -1,0 +1,81 @@
+/* Dark theme, hand-written part shared by every page. Appended after the generated rules, so a rule
+   here with the same selector wins. Rebuild with: node scripts/build-dark-css.mjs */
+
+/* tokens: the generated rules already use literal colors; these keep scripts, inline styles and
+   anything new that reads var(--ink) etc. in step with the night palette */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --canvas: #10243A;
+  --frame: #17212B;
+  --ink: #E4EBF1;
+  --ink-soft: #A9BBC9;
+  --ink-faint: #7F96A8;
+  --grid: #1D2833;
+  --line: rgba(255,255,255,.08);
+  --line-2: rgba(255,255,255,.14);
+  --soft: #1B2631;
+  --brand-strong: #C93F0E;
+  --sh: 0 20px 50px -28px rgba(0,0,0,.7);
+}
+
+/* night sky in place of the day gradient */
+:root[data-theme="dark"] body {
+  background:
+    radial-gradient(110% 70% at 82% -12%, rgba(120,170,230,.16) 0%, rgba(120,170,230,0) 45%),
+    radial-gradient(120% 80% at 10% 118%, rgba(60,110,170,.22) 0%, rgba(60,110,170,0) 52%),
+    linear-gradient(180deg, #08111D 0%, #0C1A2B 40%, #112440 76%, #16304F 100%);
+  background-attachment: fixed;
+}
+/* a few stars behind the clouds */
+:root[data-theme="dark"] .sky::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .7;
+  background-image:
+    radial-gradient(1.2px 1.2px at 12% 18%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 27% 62%, #fff 50%, transparent 51%),
+    radial-gradient(1.4px 1.4px at 41% 9%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 58% 33%, #fff 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 71% 74%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 86% 21%, #fff 50%, transparent 51%),
+    radial-gradient(1.3px 1.3px at 93% 52%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 6% 84%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 49% 88%, #fff 50%, transparent 51%),
+    radial-gradient(1.1px 1.1px at 33% 40%, #fff 50%, transparent 51%);
+}
+/* clouds stay, lit faintly by the moon */
+/* (!important: the pages give single clouds their own opacity with more specific selectors) */
+:root[data-theme="dark"] .sky > .cloud { opacity: .12 !important; filter: none !important; }
+
+/* the Contact pill is ink on white in light mode; at night it flips to light on dark so it still stands out */
+:root[data-theme="dark"] .nav-pill a.cta { background: #E4EBF1; color: #14202B; }
+
+/* CV preview dialog (styles live in CvPreview.astro, so the generator does not see them) */
+:root[data-theme="dark"] .cvp, :root[data-theme="dark"] .cvp-pdf { background: #0F171F; }
+:root[data-theme="dark"] .cvp::backdrop { background: rgba(0, 0, 0, .6); }
+:root[data-theme="dark"] .cvp-bar { background: #17212B; border-bottom-color: rgba(255, 255, 255, .1); }
+:root[data-theme="dark"] .cvp-ghost { box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .22); }
+:root[data-theme="dark"] .cvp-x:hover { background: rgba(255, 255, 255, .1); }
+
+/* 404 frame (styles live in 404.astro) */
+:root[data-theme="dark"] .nf-frame { background: rgba(23, 33, 43, .5); }
+:root[data-theme="dark"] .nf-frame i { background: #17212B; }
+:root[data-theme="dark"] .nf-big { color: rgba(255, 255, 255, .16); }
+:root[data-theme="dark"] .nf-ghost { background: #17212B; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .22); }
+:root[data-theme="dark"] .nf-ghost:hover { box-shadow: inset 0 0 0 1.5px #E4EBF1, 0 18px 34px -20px rgba(0, 0, 0, .7); }
+
+/* ── theme toggle (last item in the nav pill, so it shows at every width) ── */
+.theme-btn {
+  display: inline-grid; place-items: center; width: 34px; height: 34px; margin-left: 2px; flex: none;
+  border: 0; border-radius: 50%; background: transparent; color: var(--ink); cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.theme-btn:hover { background: rgba(20,32,43,.07); }
+.theme-btn svg { width: 17px; height: 17px; }
+.theme-btn .moon, :root[data-theme="dark"] .theme-btn .sun { display: none; }
+:root[data-theme="dark"] .theme-btn .moon { display: block; }
+:root[data-theme="dark"] .theme-btn:hover { background: rgba(255,255,255,.1); }
+.theme-btn:focus-visible { outline: 2px solid var(--tool, #0D99FF); outline-offset: 2px; }
+
+/* circular reveal from the toggle when switching (browsers with view transitions) */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+/* switching without view transitions: no half-animated colors */
+.theme-switching, .theme-switching * { transition: none !important; }
